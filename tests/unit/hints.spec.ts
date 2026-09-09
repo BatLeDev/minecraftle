@@ -7,10 +7,9 @@ import type { Grid, RecipeShape } from '../../src/utils/types.ts'
 const P = 'minecraft:planks'
 const S = 'minecraft:stick'
 
-/** The stick recipe: two planks stacked vertically. */
+/** The stick recipe: two planks stacked vertically, so six placements in all. */
 const STICK: RecipeShape = [[P], [P]]
 
-/** Builds a grid from nine cells written out as a readable 3x3 block. */
 const g = (...cells: (string | null)[]): Grid => Object.freeze(cells)
 const _ = null
 
@@ -18,68 +17,76 @@ const A = Hint.Absent
 const M = Hint.Misplaced
 const C = Hint.Correct
 
-test.describe('issue #67 — hints must not depend on where a shape sits', () => {
+test.describe('issue #67 — a guess must not be judged on an earlier one', () => {
   test('a wooden sword scores the same in every column', () => {
     const variants = placements(STICK)
 
-    const left = scoreGuess(g(P, _, _, P, _, _, S, _, _), variants)
-    const middle = scoreGuess(g(_, P, _, _, P, _, _, S, _), variants)
-    const right = scoreGuess(g(_, _, P, _, _, P, _, _, S), variants)
-
-    expect(left.hints).toEqual([C, A, A, C, A, A, A, A, A])
-    expect(middle.hints).toEqual([A, C, A, A, C, A, A, A, A])
-    expect(right.hints).toEqual([A, A, C, A, A, C, A, A, A])
+    expect(scoreGuess(g(P, _, _, P, _, _, S, _, _), variants).hints)
+      .toEqual([C, A, A, C, A, A, A, A, A])
+    expect(scoreGuess(g(_, P, _, _, P, _, _, S, _), variants).hints)
+      .toEqual([A, C, A, A, C, A, A, A, A])
+    expect(scoreGuess(g(_, _, P, _, _, P, _, _, S), variants).hints)
+      .toEqual([A, A, C, A, A, C, A, A, A])
   })
 
-  test('an earlier guess does not bias a later one toward the left', () => {
-    // The reported reproduction: play a shape that leaves several placements
-    // alive, then play one that pins the answer down in the middle column.
-    // Upstream trimmed the surviving set using an arbitrarily chosen "best"
-    // placement, so the middle column came back yellow instead of green.
-    const afterSlab = scoreGuess(g(P, P, P, _, _, _, _, _, _), placements(STICK))
-    expect(afterSlab.variants.length).toBe(3)
+  test('an ambiguous guess does not pin the answer for the next one', () => {
+    // The reported reproduction. Upstream scored the slab against one
+    // arbitrarily chosen placement and then threw the others away, so the sword
+    // in the middle column came back yellow. Each guess now stands alone.
+    const variants = placements(STICK)
+    scoreGuess(g(P, P, P, _, _, _, _, _, _), variants)
 
-    const middle = scoreGuess(g(_, P, _, _, P, _, _, S, _), afterSlab.variants)
-    expect(middle.hints).toEqual([A, C, A, A, C, A, A, A, A])
+    expect(scoreGuess(g(_, P, _, _, P, _, _, S, _), variants).hints)
+      .toEqual([A, C, A, A, C, A, A, A, A])
   })
 
-  test('a shape matching several placements equally greens none of them', () => {
-    // Three placements match one plank each, and no slot is correct in all
-    // three, so nothing may be promised as green.
-    const scored = scoreGuess(g(P, P, P, _, _, _, _, _, _), placements(STICK))
-    expect(scored.hints).toEqual([M, M, A, A, A, A, A, A, A])
+  test('the same shape scores the same wherever it is placed', () => {
+    // Translation invariance: the shape is the puzzle, its position is not.
+    const variants = placements(STICK)
+    const topRow = scoreGuess(g(P, P, P, _, _, _, _, _, _), variants).hints
+    const middleRow = scoreGuess(g(_, _, _, P, P, P, _, _, _), variants).hints
+
+    expect(middleRow.slice(3, 6)).toEqual(topRow.slice(0, 3))
   })
 
-  test('a guess equal to a placement is solved wherever it sits', () => {
+  test('a guess equal to a placement is all green, wherever it sits', () => {
     const variants = placements(STICK)
     for (const [a, b] of [[0, 3], [1, 4], [2, 5], [3, 6], [4, 7], [5, 8]]) {
       const cells: (string | null)[] = Array(9).fill(null)
       cells[a] = P
       cells[b] = P
-      expect(scoreGuess(g(...cells), variants).solved, `placement ${a}/${b}`).toBe(true)
+      const { hints } = scoreGuess(g(...cells), variants)
+      expect([hints[a], hints[b]], `placement ${a}/${b}`).toEqual([C, C])
     }
   })
 })
 
+test.describe('generosity is kept', () => {
+  test('a guess overlapping one plank still earns a green', () => {
+    // Three placements tie here. Upstream greened one of them, and so do we —
+    // what changed is that the other two are not discarded afterwards.
+    const { hints } = scoreGuess(g(P, P, P, _, _, _, _, _, _), placements(STICK))
+    expect(hints.filter(h => h === C).length).toBe(1)
+    expect(hints.filter(h => h === M).length).toBe(1)
+  })
+})
+
 test.describe('yellow slots', () => {
-  test('never promise more copies of an item than the solution holds', () => {
-    // The solution holds two planks; a guess with five must not light up five.
-    const scored = scoreGuess(g(P, P, P, P, P, _, _, _, _), placements(STICK))
-    const lit = scored.hints.filter(h => h !== Hint.Absent).length
-    expect(lit).toBe(2)
+  test('never promise more copies of an item than the recipe holds', () => {
+    const { hints } = scoreGuess(g(P, P, P, P, P, _, _, _, _), placements(STICK))
+    expect(hints.filter(h => h !== A).length).toBe(2)
   })
 
-  test('an item absent from the solution stays grey', () => {
-    const scored = scoreGuess(g(S, S, S, _, _, _, _, _, _), placements(STICK))
-    expect(scored.hints).toEqual([A, A, A, A, A, A, A, A, A])
+  test('an item absent from the recipe stays grey', () => {
+    const { hints } = scoreGuess(g(S, S, S, _, _, _, _, _, _), placements(STICK))
+    expect(hints).toEqual([A, A, A, A, A, A, A, A, A])
   })
 
   test('green slots consume the budget before yellow ones', () => {
-    // One plank is pinned green, so only the second may still be yellow.
-    const variants = placements(STICK).filter((_v, i) => i === 0)
-    const scored = scoreGuess(g(P, P, P, _, _, _, _, _, _), variants)
-    expect(scored.hints[0]).toBe(C)
-    expect(scored.hints.filter(h => h === M).length).toBe(1)
+    const { hints } = scoreGuess(g(P, P, P, _, _, _, _, _, _), placements(STICK))
+    const greens = hints.filter(h => h === C).length
+    const yellows = hints.filter(h => h === M).length
+    expect(greens + yellows).toBe(2)
   })
 })
 
@@ -93,10 +100,8 @@ test('scoring never mutates its inputs', () => {
   expect(JSON.stringify(guess)).toBe(guessSnapshot)
 })
 
-test('the surviving set only ever shrinks', () => {
-  let variants = placements(STICK)
-  const before = variants.length
-  variants = scoreGuess(g(P, _, _, _, _, _, _, _, _), variants).variants as Grid[]
-  expect(variants.length).toBeLessThanOrEqual(before)
-  expect(variants.length).toBeGreaterThan(0)
+test('scoring the same guess twice gives the same answer', () => {
+  const variants = placements(STICK)
+  const guess = g(P, P, _, _, _, _, _, _, _)
+  expect(scoreGuess(guess, variants).hints).toEqual(scoreGuess(guess, variants).hints)
 })

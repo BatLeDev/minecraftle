@@ -20,6 +20,7 @@ const solutionName = computed(() => itemName(recipes[solution.value].output, opt
 
 const summary = computed(() => shareText({
   day: day.value,
+  guesses: game.value.guesses,
   hints: game.value.hints,
   won: status.value === 'won',
   highContrast: options.value.highContrast

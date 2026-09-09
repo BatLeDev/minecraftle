@@ -12,7 +12,7 @@ export type GameState = {
   readonly hints: readonly Hints[]
   /** What each guess actually crafted, if anything — shown as the grid's output. */
   readonly crafted: readonly (string | null)[]
-  /** Placements of the solution still possible. */
+  /** Every placement of the solution; constant for the whole game. */
   readonly variants: readonly Grid[]
   readonly status: GameStatus
 }
@@ -76,7 +76,6 @@ export function applyGuess (
     guesses,
     hints: [...state.hints, scored.hints],
     crafted: [...state.crafted, crafted],
-    variants: scored.variants,
     status
   }
 }
