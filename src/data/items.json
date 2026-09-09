@@ -1,0 +1,1591 @@
+{
+  "cell": 48,
+  "cols": 12,
+  "rows": 12,
+  "items": {
+    "minecraft:activator_rail": {
+      "name": {
+        "en": "Activator Rail",
+        "fr": "Rails déclencheurs"
+      },
+      "sprite": [
+        0,
+        0
+      ],
+      "stack": 64
+    },
+    "minecraft:barrel": {
+      "name": {
+        "en": "Barrel",
+        "fr": "Tonneau"
+      },
+      "sprite": [
+        1,
+        0
+      ],
+      "stack": 64
+    },
+    "minecraft:bow": {
+      "name": {
+        "en": "Bow",
+        "fr": "Arc"
+      },
+      "sprite": [
+        2,
+        0
+      ],
+      "stack": 1
+    },
+    "minecraft:bowl": {
+      "name": {
+        "en": "Bowl",
+        "fr": "Bol"
+      },
+      "sprite": [
+        3,
+        0
+      ],
+      "stack": 64
+    },
+    "minecraft:bucket": {
+      "name": {
+        "en": "Bucket",
+        "fr": "Seau"
+      },
+      "sprite": [
+        4,
+        0
+      ],
+      "stack": 16
+    },
+    "minecraft:bundle": {
+      "name": {
+        "en": "Bundle",
+        "fr": "Sac"
+      },
+      "sprite": [
+        5,
+        0
+      ],
+      "stack": 1
+    },
+    "minecraft:campfire": {
+      "name": {
+        "en": "Campfire",
+        "fr": "Feu de camp"
+      },
+      "sprite": [
+        6,
+        0
+      ],
+      "stack": 64
+    },
+    "minecraft:cauldron": {
+      "name": {
+        "en": "Cauldron",
+        "fr": "Chaudron"
+      },
+      "sprite": [
+        7,
+        0
+      ],
+      "stack": 64
+    },
+    "minecraft:chest": {
+      "name": {
+        "en": "Chest",
+        "fr": "Coffre"
+      },
+      "sprite": [
+        8,
+        0
+      ],
+      "stack": 64
+    },
+    "minecraft:chiseled_bookshelf": {
+      "name": {
+        "en": "Chiseled Bookshelf",
+        "fr": "Bibliothèque sculptée"
+      },
+      "sprite": [
+        9,
+        0
+      ],
+      "stack": 1
+    },
+    "minecraft:clock": {
+      "name": {
+        "en": "Clock",
+        "fr": "Montre"
+      },
+      "sprite": [
+        10,
+        0
+      ],
+      "stack": 64
+    },
+    "minecraft:coal": {
+      "name": {
+        "en": "Coal",
+        "fr": "Charbon"
+      },
+      "sprite": [
+        11,
+        0
+      ],
+      "stack": 64
+    },
+    "minecraft:coal_block": {
+      "name": {
+        "en": "Block of Coal",
+        "fr": "Bloc de charbon"
+      },
+      "sprite": [
+        0,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:cobblestone": {
+      "name": {
+        "en": "Cobblestone",
+        "fr": "Pierres"
+      },
+      "sprite": [
+        1,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:cobblestone_slab": {
+      "name": {
+        "en": "Cobblestone Slab",
+        "fr": "Dalle de pierres"
+      },
+      "sprite": [
+        2,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:cobblestone_stairs": {
+      "name": {
+        "en": "Cobblestone Stairs",
+        "fr": "Escalier en pierre"
+      },
+      "sprite": [
+        3,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:cobblestone_wall": {
+      "name": {
+        "en": "Cobblestone Wall",
+        "fr": "Muret de pierres"
+      },
+      "sprite": [
+        4,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:comparator": {
+      "name": {
+        "en": "Redstone Comparator",
+        "fr": "Comparateur de redstone"
+      },
+      "sprite": [
+        5,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:compass": {
+      "name": {
+        "en": "Compass",
+        "fr": "Boussole"
+      },
+      "sprite": [
+        6,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:composter": {
+      "name": {
+        "en": "Composter",
+        "fr": "Composteur"
+      },
+      "sprite": [
+        7,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:crafting_table": {
+      "name": {
+        "en": "Crafting Table",
+        "fr": "Établi"
+      },
+      "sprite": [
+        8,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:daylight_detector": {
+      "name": {
+        "en": "Daylight Detector",
+        "fr": "Capteur de lumière"
+      },
+      "sprite": [
+        9,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:diamond": {
+      "name": {
+        "en": "Diamond",
+        "fr": "Diamant"
+      },
+      "sprite": [
+        10,
+        1
+      ],
+      "stack": 64
+    },
+    "minecraft:diamond_axe": {
+      "name": {
+        "en": "Diamond Axe",
+        "fr": "Hache en diamant"
+      },
+      "sprite": [
+        11,
+        1
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_block": {
+      "name": {
+        "en": "Block of Diamond",
+        "fr": "Bloc de diamant"
+      },
+      "sprite": [
+        0,
+        2
+      ],
+      "stack": 64
+    },
+    "minecraft:diamond_boots": {
+      "name": {
+        "en": "Diamond Boots",
+        "fr": "Bottes en diamant"
+      },
+      "sprite": [
+        1,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_chestplate": {
+      "name": {
+        "en": "Diamond Chestplate",
+        "fr": "Plastron en diamant"
+      },
+      "sprite": [
+        2,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_helmet": {
+      "name": {
+        "en": "Diamond Helmet",
+        "fr": "Casque en diamant"
+      },
+      "sprite": [
+        3,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_hoe": {
+      "name": {
+        "en": "Diamond Hoe",
+        "fr": "Houe en diamant"
+      },
+      "sprite": [
+        4,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_leggings": {
+      "name": {
+        "en": "Diamond Leggings",
+        "fr": "Jambières en diamant"
+      },
+      "sprite": [
+        5,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_pickaxe": {
+      "name": {
+        "en": "Diamond Pickaxe",
+        "fr": "Pioche en diamant"
+      },
+      "sprite": [
+        6,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_shovel": {
+      "name": {
+        "en": "Diamond Shovel",
+        "fr": "Pelle en diamant"
+      },
+      "sprite": [
+        7,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_spear": {
+      "name": {
+        "en": "Diamond Spear",
+        "fr": "Lance en diamant"
+      },
+      "sprite": [
+        8,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diamond_sword": {
+      "name": {
+        "en": "Diamond Sword",
+        "fr": "Épée en diamant"
+      },
+      "sprite": [
+        9,
+        2
+      ],
+      "stack": 1
+    },
+    "minecraft:diorite": {
+      "name": {
+        "en": "Diorite",
+        "fr": "Diorite"
+      },
+      "sprite": [
+        10,
+        2
+      ],
+      "stack": 64
+    },
+    "minecraft:dropper": {
+      "name": {
+        "en": "Dropper",
+        "fr": "Dropper"
+      },
+      "sprite": [
+        11,
+        2
+      ],
+      "stack": 64
+    },
+    "minecraft:fishing_rod": {
+      "name": {
+        "en": "Fishing Rod",
+        "fr": "Canne à pêche"
+      },
+      "sprite": [
+        0,
+        3
+      ],
+      "stack": 1
+    },
+    "minecraft:furnace": {
+      "name": {
+        "en": "Furnace",
+        "fr": "Fourneau"
+      },
+      "sprite": [
+        1,
+        3
+      ],
+      "stack": 64
+    },
+    "minecraft:glass": {
+      "name": {
+        "en": "Glass",
+        "fr": "Verre"
+      },
+      "sprite": [
+        2,
+        3
+      ],
+      "stack": 64
+    },
+    "minecraft:glass_bottle": {
+      "name": {
+        "en": "Glass Bottle",
+        "fr": "Fiole"
+      },
+      "sprite": [
+        3,
+        3
+      ],
+      "stack": 64
+    },
+    "minecraft:glass_pane": {
+      "name": {
+        "en": "Glass Pane",
+        "fr": "Vitre"
+      },
+      "sprite": [
+        4,
+        3
+      ],
+      "stack": 64
+    },
+    "minecraft:gold_block": {
+      "name": {
+        "en": "Block of Gold",
+        "fr": "Bloc d'or"
+      },
+      "sprite": [
+        5,
+        3
+      ],
+      "stack": 64
+    },
+    "minecraft:gold_ingot": {
+      "name": {
+        "en": "Gold Ingot",
+        "fr": "Lingot d'or"
+      },
+      "sprite": [
+        6,
+        3
+      ],
+      "stack": 64
+    },
+    "minecraft:gold_nugget": {
+      "name": {
+        "en": "Gold Nugget",
+        "fr": "Pépite d'or"
+      },
+      "sprite": [
+        7,
+        3
+      ],
+      "stack": 64
+    },
+    "minecraft:golden_axe": {
+      "name": {
+        "en": "Golden Axe",
+        "fr": "Hache en or"
+      },
+      "sprite": [
+        8,
+        3
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_boots": {
+      "name": {
+        "en": "Golden Boots",
+        "fr": "Bottes en or"
+      },
+      "sprite": [
+        9,
+        3
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_chestplate": {
+      "name": {
+        "en": "Golden Chestplate",
+        "fr": "Plastron en or"
+      },
+      "sprite": [
+        10,
+        3
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_helmet": {
+      "name": {
+        "en": "Golden Helmet",
+        "fr": "Casque en or"
+      },
+      "sprite": [
+        11,
+        3
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_hoe": {
+      "name": {
+        "en": "Golden Hoe",
+        "fr": "Houe en or"
+      },
+      "sprite": [
+        0,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_leggings": {
+      "name": {
+        "en": "Golden Leggings",
+        "fr": "Jambières en or"
+      },
+      "sprite": [
+        1,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_pickaxe": {
+      "name": {
+        "en": "Golden Pickaxe",
+        "fr": "Pioche en or"
+      },
+      "sprite": [
+        2,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_shovel": {
+      "name": {
+        "en": "Golden Shovel",
+        "fr": "Pelle en or"
+      },
+      "sprite": [
+        3,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_spear": {
+      "name": {
+        "en": "Golden Spear",
+        "fr": "Lance en or"
+      },
+      "sprite": [
+        4,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:golden_sword": {
+      "name": {
+        "en": "Golden Sword",
+        "fr": "Épée en or"
+      },
+      "sprite": [
+        5,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:heavy_weighted_pressure_plate": {
+      "name": {
+        "en": "Heavy Weighted Pressure Plate",
+        "fr": "Plaque de pression pondérée lourde"
+      },
+      "sprite": [
+        6,
+        4
+      ],
+      "stack": 64
+    },
+    "minecraft:iron_axe": {
+      "name": {
+        "en": "Iron Axe",
+        "fr": "Hache en fer"
+      },
+      "sprite": [
+        7,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_bars": {
+      "name": {
+        "en": "Iron Bars",
+        "fr": "Barreaux de fer"
+      },
+      "sprite": [
+        8,
+        4
+      ],
+      "stack": 64
+    },
+    "minecraft:iron_block": {
+      "name": {
+        "en": "Block of Iron",
+        "fr": "Bloc de fer"
+      },
+      "sprite": [
+        9,
+        4
+      ],
+      "stack": 64
+    },
+    "minecraft:iron_boots": {
+      "name": {
+        "en": "Iron Boots",
+        "fr": "Bottes en fer"
+      },
+      "sprite": [
+        10,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_chain": {
+      "name": {
+        "en": "Iron Chain",
+        "fr": "Chaîne en fer"
+      },
+      "sprite": [
+        11,
+        4
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_chestplate": {
+      "name": {
+        "en": "Iron Chestplate",
+        "fr": "Plastron en fer"
+      },
+      "sprite": [
+        0,
+        5
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_door": {
+      "name": {
+        "en": "Iron Door",
+        "fr": "Porte en fer"
+      },
+      "sprite": [
+        1,
+        5
+      ],
+      "stack": 64
+    },
+    "minecraft:iron_helmet": {
+      "name": {
+        "en": "Iron Helmet",
+        "fr": "Casque en fer"
+      },
+      "sprite": [
+        2,
+        5
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_hoe": {
+      "name": {
+        "en": "Iron Hoe",
+        "fr": "Houe en fer"
+      },
+      "sprite": [
+        3,
+        5
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_ingot": {
+      "name": {
+        "en": "Iron Ingot",
+        "fr": "Lingot de fer"
+      },
+      "sprite": [
+        4,
+        5
+      ],
+      "stack": 64
+    },
+    "minecraft:iron_leggings": {
+      "name": {
+        "en": "Iron Leggings",
+        "fr": "Jambières en fer"
+      },
+      "sprite": [
+        5,
+        5
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_nugget": {
+      "name": {
+        "en": "Iron Nugget",
+        "fr": "Pépite de fer"
+      },
+      "sprite": [
+        6,
+        5
+      ],
+      "stack": 64
+    },
+    "minecraft:iron_pickaxe": {
+      "name": {
+        "en": "Iron Pickaxe",
+        "fr": "Pioche en fer"
+      },
+      "sprite": [
+        7,
+        5
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_shovel": {
+      "name": {
+        "en": "Iron Shovel",
+        "fr": "Pelle en fer"
+      },
+      "sprite": [
+        8,
+        5
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_spear": {
+      "name": {
+        "en": "Iron Spear",
+        "fr": "Lance en fer"
+      },
+      "sprite": [
+        9,
+        5
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_sword": {
+      "name": {
+        "en": "Iron Sword",
+        "fr": "Épée en fer"
+      },
+      "sprite": [
+        10,
+        5
+      ],
+      "stack": 1
+    },
+    "minecraft:iron_trapdoor": {
+      "name": {
+        "en": "Iron Trapdoor",
+        "fr": "Trappe en fer"
+      },
+      "sprite": [
+        11,
+        5
+      ],
+      "stack": 64
+    },
+    "minecraft:item_frame": {
+      "name": {
+        "en": "Item Frame",
+        "fr": "Cadre"
+      },
+      "sprite": [
+        0,
+        6
+      ],
+      "stack": 64
+    },
+    "minecraft:jukebox": {
+      "name": {
+        "en": "Jukebox",
+        "fr": "Jukebox"
+      },
+      "sprite": [
+        1,
+        6
+      ],
+      "stack": 64
+    },
+    "minecraft:ladder": {
+      "name": {
+        "en": "Ladder",
+        "fr": "Échelle"
+      },
+      "sprite": [
+        2,
+        6
+      ],
+      "stack": 64
+    },
+    "minecraft:lead": {
+      "name": {
+        "en": "Lead",
+        "fr": "Laisse"
+      },
+      "sprite": [
+        3,
+        6
+      ],
+      "stack": 1
+    },
+    "minecraft:leather": {
+      "name": {
+        "en": "Leather",
+        "fr": "Cuir"
+      },
+      "sprite": [
+        4,
+        6
+      ],
+      "stack": 64
+    },
+    "minecraft:leather_boots": {
+      "name": {
+        "en": "Leather Boots",
+        "fr": "Bottes en cuir"
+      },
+      "sprite": [
+        5,
+        6
+      ],
+      "stack": 1
+    },
+    "minecraft:leather_chestplate": {
+      "name": {
+        "en": "Leather Tunic",
+        "fr": "Tunique en cuir"
+      },
+      "sprite": [
+        6,
+        6
+      ],
+      "stack": 1
+    },
+    "minecraft:leather_helmet": {
+      "name": {
+        "en": "Leather Cap",
+        "fr": "Chapeau en cuir"
+      },
+      "sprite": [
+        7,
+        6
+      ],
+      "stack": 1
+    },
+    "minecraft:leather_horse_armor": {
+      "name": {
+        "en": "Leather Horse Armor",
+        "fr": "Armure en cuir pour cheval"
+      },
+      "sprite": [
+        8,
+        6
+      ],
+      "stack": 64
+    },
+    "minecraft:leather_leggings": {
+      "name": {
+        "en": "Leather Pants",
+        "fr": "Pantalon en cuir"
+      },
+      "sprite": [
+        9,
+        6
+      ],
+      "stack": 1
+    },
+    "minecraft:lever": {
+      "name": {
+        "en": "Lever",
+        "fr": "Levier"
+      },
+      "sprite": [
+        10,
+        6
+      ],
+      "stack": 64
+    },
+    "minecraft:light_weighted_pressure_plate": {
+      "name": {
+        "en": "Light Weighted Pressure Plate",
+        "fr": "Plaque de pression pondérée légère"
+      },
+      "sprite": [
+        11,
+        6
+      ],
+      "stack": 64
+    },
+    "minecraft:loom": {
+      "name": {
+        "en": "Loom",
+        "fr": "Métier à tisser"
+      },
+      "sprite": [
+        0,
+        7
+      ],
+      "stack": 64
+    },
+    "minecraft:minecart": {
+      "name": {
+        "en": "Minecart",
+        "fr": "Wagonnet"
+      },
+      "sprite": [
+        1,
+        7
+      ],
+      "stack": 1
+    },
+    "minecraft:note_block": {
+      "name": {
+        "en": "Note Block",
+        "fr": "Bloc musical"
+      },
+      "sprite": [
+        2,
+        7
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_boat": {
+      "name": {
+        "en": "Oak Boat",
+        "fr": "Bateau en chêne"
+      },
+      "sprite": [
+        3,
+        7
+      ],
+      "stack": 1
+    },
+    "minecraft:oak_button": {
+      "name": {
+        "en": "Oak Button",
+        "fr": "Bouton en chêne"
+      },
+      "sprite": [
+        4,
+        7
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_door": {
+      "name": {
+        "en": "Oak Door",
+        "fr": "Porte en chêne"
+      },
+      "sprite": [
+        5,
+        7
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_fence": {
+      "name": {
+        "en": "Oak Fence",
+        "fr": "Barrière en chêne"
+      },
+      "sprite": [
+        6,
+        7
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_fence_gate": {
+      "name": {
+        "en": "Oak Fence Gate",
+        "fr": "Portillon en chêne"
+      },
+      "sprite": [
+        7,
+        7
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_log": {
+      "name": {
+        "en": "Oak Log",
+        "fr": "Bûche de chêne"
+      },
+      "sprite": [
+        8,
+        7
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_planks": {
+      "name": {
+        "en": "Oak Planks",
+        "fr": "Planches de chêne"
+      },
+      "sprite": [
+        9,
+        7
+      ],
+      "stack": 1
+    },
+    "minecraft:oak_pressure_plate": {
+      "name": {
+        "en": "Oak Pressure Plate",
+        "fr": "Plaque de pression en chêne"
+      },
+      "sprite": [
+        10,
+        7
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_sign": {
+      "name": {
+        "en": "Oak Sign",
+        "fr": "Pancarte en chêne"
+      },
+      "sprite": [
+        11,
+        7
+      ],
+      "stack": 16
+    },
+    "minecraft:oak_slab": {
+      "name": {
+        "en": "Oak Slab",
+        "fr": "Dalle en chêne"
+      },
+      "sprite": [
+        0,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_stairs": {
+      "name": {
+        "en": "Oak Stairs",
+        "fr": "Escalier en chêne"
+      },
+      "sprite": [
+        1,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_trapdoor": {
+      "name": {
+        "en": "Oak Trapdoor",
+        "fr": "Trappe en chêne"
+      },
+      "sprite": [
+        2,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:oak_wood": {
+      "name": {
+        "en": "Oak Wood",
+        "fr": "Bois de chêne"
+      },
+      "sprite": [
+        3,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:observer": {
+      "name": {
+        "en": "Observer",
+        "fr": "Observateur"
+      },
+      "sprite": [
+        4,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:painting": {
+      "name": {
+        "en": "Painting",
+        "fr": "Tableau"
+      },
+      "sprite": [
+        5,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:piston": {
+      "name": {
+        "en": "Piston",
+        "fr": "Piston"
+      },
+      "sprite": [
+        6,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:planks": {
+      "name": {
+        "en": "Planks",
+        "fr": "Planches"
+      },
+      "sprite": [
+        7,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:powered_rail": {
+      "name": {
+        "en": "Powered Rail",
+        "fr": "Rails de propulsion"
+      },
+      "sprite": [
+        8,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:quartz": {
+      "name": {
+        "en": "Nether Quartz",
+        "fr": "Quartz du Nether"
+      },
+      "sprite": [
+        9,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:quartz_block": {
+      "name": {
+        "en": "Block of Quartz",
+        "fr": "Bloc de quartz"
+      },
+      "sprite": [
+        10,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:rail": {
+      "name": {
+        "en": "Rail",
+        "fr": "Rails"
+      },
+      "sprite": [
+        11,
+        8
+      ],
+      "stack": 64
+    },
+    "minecraft:redstone": {
+      "name": {
+        "en": "Redstone Dust",
+        "fr": "Poudre de redstone"
+      },
+      "sprite": [
+        0,
+        9
+      ],
+      "stack": 64
+    },
+    "minecraft:redstone_block": {
+      "name": {
+        "en": "Block of Redstone",
+        "fr": "Bloc de redstone"
+      },
+      "sprite": [
+        1,
+        9
+      ],
+      "stack": 64
+    },
+    "minecraft:redstone_torch": {
+      "name": {
+        "en": "Redstone Torch",
+        "fr": "Torche de redstone"
+      },
+      "sprite": [
+        2,
+        9
+      ],
+      "stack": 64
+    },
+    "minecraft:repeater": {
+      "name": {
+        "en": "Redstone Repeater",
+        "fr": "Répéteur de redstone"
+      },
+      "sprite": [
+        3,
+        9
+      ],
+      "stack": 64
+    },
+    "minecraft:saddle": {
+      "name": {
+        "en": "Saddle",
+        "fr": "Selle"
+      },
+      "sprite": [
+        4,
+        9
+      ],
+      "stack": 1
+    },
+    "minecraft:shears": {
+      "name": {
+        "en": "Shears",
+        "fr": "Cisailles"
+      },
+      "sprite": [
+        5,
+        9
+      ],
+      "stack": 1
+    },
+    "minecraft:shield": {
+      "name": {
+        "en": "Shield",
+        "fr": "Bouclier"
+      },
+      "sprite": [
+        6,
+        9
+      ],
+      "stack": 1
+    },
+    "minecraft:smithing_table": {
+      "name": {
+        "en": "Smithing Table",
+        "fr": "Table de forge"
+      },
+      "sprite": [
+        7,
+        9
+      ],
+      "stack": 64
+    },
+    "minecraft:stick": {
+      "name": {
+        "en": "Stick",
+        "fr": "Bâton"
+      },
+      "sprite": [
+        8,
+        9
+      ],
+      "stack": 64
+    },
+    "minecraft:stone": {
+      "name": {
+        "en": "Stone",
+        "fr": "Roche"
+      },
+      "sprite": [
+        9,
+        9
+      ],
+      "stack": 64
+    },
+    "minecraft:stone_axe": {
+      "name": {
+        "en": "Stone Axe",
+        "fr": "Hache en pierre"
+      },
+      "sprite": [
+        10,
+        9
+      ],
+      "stack": 1
+    },
+    "minecraft:stone_bricks": {
+      "name": {
+        "en": "Stone Bricks",
+        "fr": "Pierre taillée"
+      },
+      "sprite": [
+        11,
+        9
+      ],
+      "stack": 64
+    },
+    "minecraft:stone_button": {
+      "name": {
+        "en": "Stone Button",
+        "fr": "Bouton en pierre"
+      },
+      "sprite": [
+        0,
+        10
+      ],
+      "stack": 64
+    },
+    "minecraft:stone_hoe": {
+      "name": {
+        "en": "Stone Hoe",
+        "fr": "Houe en pierre"
+      },
+      "sprite": [
+        1,
+        10
+      ],
+      "stack": 1
+    },
+    "minecraft:stone_pickaxe": {
+      "name": {
+        "en": "Stone Pickaxe",
+        "fr": "Pioche en pierre"
+      },
+      "sprite": [
+        2,
+        10
+      ],
+      "stack": 1
+    },
+    "minecraft:stone_pressure_plate": {
+      "name": {
+        "en": "Stone Pressure Plate",
+        "fr": "Plaque de pression en pierre"
+      },
+      "sprite": [
+        3,
+        10
+      ],
+      "stack": 64
+    },
+    "minecraft:stone_shovel": {
+      "name": {
+        "en": "Stone Shovel",
+        "fr": "Pelle en pierre"
+      },
+      "sprite": [
+        4,
+        10
+      ],
+      "stack": 1
+    },
+    "minecraft:stone_slab": {
+      "name": {
+        "en": "Stone Slab",
+        "fr": "Dalle de roche"
+      },
+      "sprite": [
+        5,
+        10
+      ],
+      "stack": 64
+    },
+    "minecraft:stone_spear": {
+      "name": {
+        "en": "Stone Spear",
+        "fr": "Lance en pierre"
+      },
+      "sprite": [
+        6,
+        10
+      ],
+      "stack": 1
+    },
+    "minecraft:stone_stairs": {
+      "name": {
+        "en": "Stone Stairs",
+        "fr": "Escalier en roche"
+      },
+      "sprite": [
+        7,
+        10
+      ],
+      "stack": 64
+    },
+    "minecraft:stone_sword": {
+      "name": {
+        "en": "Stone Sword",
+        "fr": "Épée en pierre"
+      },
+      "sprite": [
+        8,
+        10
+      ],
+      "stack": 1
+    },
+    "minecraft:stonecutter": {
+      "name": {
+        "en": "Stonecutter",
+        "fr": "Tailleur de pierre"
+      },
+      "sprite": [
+        9,
+        10
+      ],
+      "stack": 64
+    },
+    "minecraft:string": {
+      "name": {
+        "en": "String",
+        "fr": "Ficelle"
+      },
+      "sprite": [
+        10,
+        10
+      ],
+      "stack": 64
+    },
+    "minecraft:torch": {
+      "name": {
+        "en": "Torch",
+        "fr": "Torche"
+      },
+      "sprite": [
+        11,
+        10
+      ],
+      "stack": 64
+    },
+    "minecraft:tripwire_hook": {
+      "name": {
+        "en": "Tripwire Hook",
+        "fr": "Crochet"
+      },
+      "sprite": [
+        0,
+        11
+      ],
+      "stack": 64
+    },
+    "minecraft:white_banner": {
+      "name": {
+        "en": "White Banner",
+        "fr": "Bannière blanche"
+      },
+      "sprite": [
+        1,
+        11
+      ],
+      "stack": 16
+    },
+    "minecraft:white_bed": {
+      "name": {
+        "en": "White Bed",
+        "fr": "Lit blanc"
+      },
+      "sprite": [
+        2,
+        11
+      ],
+      "stack": 64
+    },
+    "minecraft:white_carpet": {
+      "name": {
+        "en": "White Carpet",
+        "fr": "Tapis blanc"
+      },
+      "sprite": [
+        3,
+        11
+      ],
+      "stack": 64
+    },
+    "minecraft:white_harness": {
+      "name": {
+        "en": "White Harness",
+        "fr": "Harnais blanc"
+      },
+      "sprite": [
+        4,
+        11
+      ],
+      "stack": 1
+    },
+    "minecraft:white_wool": {
+      "name": {
+        "en": "White Wool",
+        "fr": "Laine blanche"
+      },
+      "sprite": [
+        5,
+        11
+      ],
+      "stack": 64
+    },
+    "minecraft:wooden_axe": {
+      "name": {
+        "en": "Wooden Axe",
+        "fr": "Hache en bois"
+      },
+      "sprite": [
+        6,
+        11
+      ],
+      "stack": 1
+    },
+    "minecraft:wooden_hoe": {
+      "name": {
+        "en": "Wooden Hoe",
+        "fr": "Houe en bois"
+      },
+      "sprite": [
+        7,
+        11
+      ],
+      "stack": 1
+    },
+    "minecraft:wooden_pickaxe": {
+      "name": {
+        "en": "Wooden Pickaxe",
+        "fr": "Pioche en bois"
+      },
+      "sprite": [
+        8,
+        11
+      ],
+      "stack": 1
+    },
+    "minecraft:wooden_shovel": {
+      "name": {
+        "en": "Wooden Shovel",
+        "fr": "Pelle en bois"
+      },
+      "sprite": [
+        9,
+        11
+      ],
+      "stack": 1
+    },
+    "minecraft:wooden_spear": {
+      "name": {
+        "en": "Wooden Spear",
+        "fr": "Lance en bois"
+      },
+      "sprite": [
+        10,
+        11
+      ],
+      "stack": 1
+    },
+    "minecraft:wooden_sword": {
+      "name": {
+        "en": "Wooden Sword",
+        "fr": "Épée en bois"
+      },
+      "sprite": [
+        11,
+        11
+      ],
+      "stack": 1
+    }
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "_comment": "Item ids that have no Minecraft translation key, because the game invents them. `minecraft:planks` stands for any plank type, which the real game only knows per wood species (oak_planks, birch_planks...).",
+  "minecraft:planks": { "en": "Planks", "fr": "Planches" }
+}
