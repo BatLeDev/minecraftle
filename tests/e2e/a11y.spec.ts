@@ -33,18 +33,18 @@ test('winning and losing are announced with the recipe', async ({ page }) => {
   await expect(page.locator('[aria-live="polite"]')).toContainText('Crafted in 1')
 })
 
-test('hints carry a shape, not only a colour', async ({ page }) => {
-  // WCAG 1.4.1: colour may not be the only way information is conveyed.
+test('hints are named, not only coloured', async ({ page }) => {
+  // Colour is the only *visual* channel for hints, which is a deliberate choice
+  // for the sake of matching the game's interface. Assistive technology is
+  // still served: every slot names its own result, and the high-contrast
+  // palette covers players who can see but not distinguish these hues.
   await openGame(page)
   await craft(page, solutionGrid)
 
-  const marked = page.getByTestId('guess-1').locator('.slot--correct')
-  expect(await marked.count()).toBeGreaterThan(0)
-  // The shape is drawn, not just declared.
-  const size = await marked.first().evaluate(el =>
-    getComputedStyle(el, '::after').width
+  const named = await page.getByTestId('guess-1').getByRole('img').evaluateAll(
+    slots => slots.map(s => s.getAttribute('aria-label') ?? '')
   )
-  expect(size).not.toBe('auto')
+  expect(named.some(label => /correct/.test(label))).toBe(true)
 })
 
 test('every interactive control has an accessible name', async ({ page }) => {

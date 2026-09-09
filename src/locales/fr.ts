@@ -2,11 +2,13 @@ export default {
   title: 'Minecraftle',
   tagline: 'Retrouvez la recette du jour en dix essais',
   nav: {
-    daily: 'Du jour',
+    daily: 'Quotidien',
     random: 'Aléatoire',
     howToPlay: 'Comment jouer',
     stats: 'Statistiques',
     highContrast: 'Contraste élevé',
+    on: 'Activé',
+    off: 'Désactivé',
     language: 'English',
     source: 'Code source'
   },
@@ -16,7 +18,6 @@ export default {
     clear: 'Vider la grille',
     ingredients: 'Ingrédients de fabrication',
     guessCounter: 'Essai {n}/{total}',
-    banner: 'Recettes de Minecraft 26.2',
     randomGame: 'Partie aléatoire - elle ne compte pas dans vos statistiques',
     output: 'Résultat',
     outputEmpty: "Résultat : rien pour l'instant - la grille ne fabrique rien",
@@ -66,8 +67,6 @@ export default {
     announceGuess: 'Essai {n} : {correct} bien placés, {misplaced} présents mais ailleurs. {left} essais restants.',
     announceWon: 'Fabriqué en {n} essais. La recette était {name}.',
     announceLost: 'Plus d\'essais. La recette était {name}.',
-    markCorrect: 'marqué d\'un coin plein',
-    markMisplaced: 'marqué d\'un anneau',
     currentGuess: 'Essai en cours'
   },
   footer: {

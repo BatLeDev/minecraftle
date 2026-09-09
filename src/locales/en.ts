@@ -7,6 +7,8 @@ export default {
     howToPlay: 'How to play',
     stats: 'Statistics',
     highContrast: 'High contrast',
+    on: 'On',
+    off: 'Off',
     language: 'Français',
     source: 'Source code'
   },
@@ -16,7 +18,6 @@ export default {
     clear: 'Clear grid',
     ingredients: 'Crafting Ingredients',
     guessCounter: 'Guess {n}/{total}',
-    banner: 'Recipes from Minecraft 26.2',
     randomGame: 'Random game - this one does not count towards your statistics',
     output: 'Result',
     outputEmpty: 'Result: nothing yet - the grid does not craft anything',
@@ -66,8 +67,6 @@ export default {
     announceGuess: 'Try {n}: {correct} in the right place, {misplaced} in the recipe but elsewhere. {left} tries left.',
     announceWon: 'Crafted in {n} tries. The recipe was {name}.',
     announceLost: 'Out of tries. The recipe was {name}.',
-    markCorrect: 'marked with a corner wedge',
-    markMisplaced: 'marked with a ring',
     currentGuess: 'Current try'
   },
   footer: {

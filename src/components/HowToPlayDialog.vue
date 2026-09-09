@@ -7,9 +7,9 @@ const model = defineModel<boolean>({ required: true })
 const { t } = useI18n()
 
 const legend = [
-  { css: 'slot--correct', key: 'correct', mark: 'markCorrect' },
-  { css: 'slot--misplaced', key: 'misplaced', mark: 'markMisplaced' },
-  { css: 'slot--absent', key: 'absent', mark: null }
+  { css: 'slot--correct', key: 'correct' },
+  { css: 'slot--misplaced', key: 'misplaced' },
+  { css: 'slot--absent', key: 'absent' }
 ] as const
 </script>
 
@@ -36,12 +36,7 @@ const legend = [
             :class="entry.css"
           />
         </dt>
-        <dd>
-          {{ $t(`howTo.${entry.key}`) }}
-          <template v-if="entry.mark">
-            <span class="muted">({{ $t(`a11y.${entry.mark}`) }})</span>
-          </template>
-        </dd>
+        <dd>{{ $t(`howTo.${entry.key}`) }}</dd>
       </template>
     </dl>
 
@@ -78,10 +73,6 @@ ol {
   display: block;
   width: 1.4rem;
   height: 1.4rem;
-}
-
-.muted {
-  opacity: 0.7;
 }
 
 .actions {

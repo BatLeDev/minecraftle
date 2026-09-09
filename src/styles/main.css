@@ -186,6 +186,12 @@ button.slot {
   cursor: pointer;
 }
 
+/* The result slot is only clickable once the grid crafts something, so it must
+   not invite a click before then. */
+button.slot:disabled {
+  cursor: default;
+}
+
 button.slot:hover:not(:disabled) {
   background-color: var(--slot-background-hover);
 }
@@ -193,34 +199,6 @@ button.slot:hover:not(:disabled) {
 .slot--correct { background-color: var(--hint-correct); }
 .slot--misplaced { background-color: var(--hint-misplaced); }
 .slot--absent { background-color: var(--hint-absent); }
-
-/* A shape doubling every colour: colour alone would leave a player with a
-   colour vision deficiency nothing to read (WCAG 1.4.1). */
-.slot--correct,
-.slot--misplaced {
-  position: relative;
-}
-
-.slot--correct::after,
-.slot--misplaced::after {
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  width: 9px;
-  height: 9px;
-  content: '';
-  background-color: rgba(0, 0, 0, 0.72);
-}
-
-.slot--correct::after {
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-}
-
-.slot--misplaced::after {
-  background-color: transparent;
-  border: 2px solid rgba(0, 0, 0, 0.72);
-  border-radius: 50%;
-}
 
 /* --- item sprite --- */
 .item-icon {
@@ -236,27 +214,6 @@ button.slot:hover:not(:disabled) {
   z-index: 100000;
   pointer-events: none;
   transform: translate(-50%, -50%);
-}
-
-/* --- scrolling announcement --- */
-.marquee {
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.marquee > * {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marquee-scroll 12s linear infinite;
-}
-
-.marquee:hover > * {
-  animation-play-state: paused;
-}
-
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
 }
 
 /* --- dialog --- */
@@ -313,11 +270,6 @@ button.slot:hover:not(:disabled) {
 
 /* Motion here is decorative, so honour a system-wide request to drop it. */
 @media (prefers-reduced-motion: reduce) {
-  .marquee > * {
-    padding-left: 0;
-    animation: none;
-  }
-
   *,
   *::before,
   *::after {

@@ -88,25 +88,6 @@ function toggleLocale () {
       <h1>{{ $t('title') }}</h1>
       <nav class="nav">
         <div class="nav-row">
-          <McButton @click="howToOpen = true">
-            {{ $t('nav.howToPlay') }}
-          </McButton>
-          <McButton @click="statsOpen = true">
-            {{ $t('nav.stats') }}
-          </McButton>
-        </div>
-        <div class="nav-row">
-          <McButton
-            :aria-pressed="options.highContrast"
-            @click="options.highContrast = !options.highContrast"
-          >
-            {{ $t('nav.highContrast') }}
-          </McButton>
-          <McButton @click="toggleLocale">
-            {{ $t('nav.language') }}
-          </McButton>
-        </div>
-        <div class="nav-row">
           <McButton @click="playDaily">
             {{ $t('nav.daily') }}
           </McButton>
@@ -114,16 +95,31 @@ function toggleLocale () {
             {{ $t('nav.random') }}
           </McButton>
         </div>
+        <div class="nav-row">
+          <McButton @click="howToOpen = true">
+            {{ $t('nav.howToPlay') }}
+          </McButton>
+          <McButton @click="statsOpen = true">
+            {{ $t('nav.stats') }}
+          </McButton>
+          <McButton @click="toggleLocale">
+            {{ $t('nav.language') }}
+          </McButton>
+        </div>
+        <div class="nav-row">
+          <!-- Label and value, as the game's own options menu reads, so the
+               state is legible instead of guessed from the button's look. -->
+          <McButton
+            :aria-pressed="options.highContrast"
+            @click="options.highContrast = !options.highContrast"
+          >
+            {{ $t('nav.highContrast') }} : {{ options.highContrast ? $t('nav.on') : $t('nav.off') }}
+          </McButton>
+        </div>
       </nav>
     </header>
 
     <main class="board">
-      <div class="banner inv-background box">
-        <div class="marquee">
-          <p>{{ $t('board.banner') }}</p>
-        </div>
-      </div>
-
       <p
         v-if="mode === 'random'"
         class="notice inv-background box"
@@ -198,7 +194,8 @@ function toggleLocale () {
 .nav-row {
   display: flex;
   gap: 0.5rem;
-  font-size: 0.85rem;
+  /* Small enough that the longest label still fits a third of the row. */
+  font-size: 0.75rem;
 }
 
 /* Equal widths, as the game's menus lay their buttons out. */
@@ -210,11 +207,6 @@ function toggleLocale () {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.banner {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
 }
 
 .notice {
