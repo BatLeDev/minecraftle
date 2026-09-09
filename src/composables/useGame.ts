@@ -36,6 +36,14 @@ const guesses = ref<Grid[]>([])
 const draft = ref<Grid>(EMPTY_GRID)
 const selected = ref<ItemId | null>(null)
 
+/**
+ * Set when a player who has used all ten attempts chooses to keep going.
+ *
+ * The daily is already recorded as a loss by then — carrying on is for the
+ * satisfaction of finding it, not for the statistics.
+ */
+const continued = ref(false)
+
 const solution = computed(() => mode.value === 'daily'
   ? puzzleForDay(day.value, recipeKeys)
   : randomSolution.value)
@@ -47,8 +55,9 @@ const solution = computed(() => mode.value === 'daily'
  * sync — and it means a saved game only holds what the player actually did.
  */
 const game = computed(() => {
+  const limit = continued.value ? Number.POSITIVE_INFINITY : MAX_GUESSES
   let state = createGame(recipes, solution.value)
-  for (const guess of guesses.value) state = applyGuess(state, guess, index)
+  for (const guess of guesses.value) state = applyGuess(state, guess, index, limit)
   return state
 })
 
@@ -128,8 +137,17 @@ export function useGame () {
   const status = computed(() => game.value.status)
   const canSubmit = computed(() => status.value === 'playing' && draftOutput.value !== null)
   const guessesLeft = computed(() => MAX_GUESSES - game.value.guesses.length)
+  /** True once the ten attempts are used up and the player has not chosen yet. */
+  const outOfTries = computed(() => status.value === 'lost' && !continued.value)
+
+  function keepPlaying () {
+    continued.value = true
+  }
+
   /** Which attempt is being played, 1-based, as the counter shows it. */
-  const attempt = computed(() => Math.min(game.value.guesses.length + 1, MAX_GUESSES))
+  const attempt = computed(() => continued.value
+    ? game.value.guesses.length + 1
+    : Math.min(game.value.guesses.length + 1, MAX_GUESSES))
 
   /** Picks an ingredient up, or puts it down if it was already held. */
   function select (item: ItemId | null) {
@@ -167,6 +185,7 @@ export function useGame () {
 
   /** Starts a throwaway game on a recipe drawn from the clock, not the date. */
   function playRandom () {
+    continued.value = false
     const random = seededRandom(`random-${Date.now()}-${Math.random()}`)
     randomSolution.value = recipeKeys[Math.floor(random() * recipeKeys.length)]
     mode.value = 'random'
@@ -177,6 +196,7 @@ export function useGame () {
 
   /** Returns to the puzzle of the day, restoring it from storage. */
   function playDaily () {
+    continued.value = false
     mode.value = 'daily'
     guesses.value = []
     draft.value = EMPTY_GRID
@@ -207,6 +227,9 @@ export function useGame () {
     canSubmit,
     guessesLeft,
     attempt,
+    outOfTries,
+    continued,
+    keepPlaying,
     draftOutput,
     craftedOutputs,
     ingredientHints,

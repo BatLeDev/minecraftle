@@ -3,7 +3,7 @@ import { openGame } from './helpers/game.ts'
 
 test('the interface and item names switch to French', async ({ page }) => {
   await openGame(page)
-  await page.getByRole('button', { name: 'Français' }).click()
+  await page.getByTestId('toggle-language').click()
 
   await expect(page.getByRole('button', { name: 'Vider la grille' })).toBeVisible()
   await expect(page.getByText('Essai 1/10')).toBeVisible()
@@ -13,7 +13,7 @@ test('the interface and item names switch to French', async ({ page }) => {
 
 test('the chosen language survives a reload', async ({ page }) => {
   await openGame(page)
-  await page.getByRole('button', { name: 'Français' }).click()
+  await page.getByTestId('toggle-language').click()
   await page.reload()
   await expect(page.getByRole('button', { name: 'Vider la grille' })).toBeVisible()
 })
@@ -25,7 +25,7 @@ test('high contrast swaps the hint palette', async ({ page }) => {
   const before = await swatch.evaluate(el => getComputedStyle(el).backgroundColor)
   await page.getByRole('button', { name: 'Close' }).click()
 
-  await page.getByRole('button', { name: 'High contrast' }).click()
+  await page.getByTestId('toggle-contrast').click()
   await page.getByRole('button', { name: 'How to play' }).click()
   // Orange and blue stay distinguishable under every common colour vision
   // deficiency, which green and yellow do not.

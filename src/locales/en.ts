@@ -9,10 +9,12 @@ export default {
     highContrast: 'High contrast',
     on: 'On',
     off: 'Off',
-    language: 'Français',
+    language: 'Language',
+    languageValue: 'English',
     source: 'Source code'
   },
   board: {
+    guessCounterOver: 'Attempt {n}, past the limit',
     guessesLeft: 'no tries left | 1 try left | {count} tries left',
     craft: 'Craft',
     clear: 'Clear grid',
@@ -26,7 +28,7 @@ export default {
   },
   result: {
     won: 'Crafted in {count} try | Crafted in {count} tries',
-    lost: 'Out of tries',
+    lost: 'Lost',
     solution: 'The recipe was {name}',
     share: 'Copy result',
     copied: 'Copied',
@@ -55,7 +57,15 @@ export default {
     distribution: 'Guess distribution',
     empty: 'Finish a daily puzzle to start your statistics.'
   },
+  outOfTries: {
+    title: 'Out of tries',
+    body: 'You have used all ten attempts. Keep going, or give up and see the recipe?',
+    note: "Either way, today's puzzle already counts as a loss.",
+    keepPlaying: 'Keep playing',
+    giveUp: 'Give up'
+  },
   a11y: {
+    announceGuessOver: 'Try {n}: {correct} in the right place, {misplaced} in the recipe but elsewhere.',
     slotEmpty: 'Row {row}, column {col}: empty',
     slotFilled: 'Row {row}, column {col}: {item}',
     slotCorrect: 'Row {row}, column {col}: {item}, correct',

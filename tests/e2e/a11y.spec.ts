@@ -12,7 +12,7 @@ test('the document language follows the interface language', async ({ page }) =>
   await openGame(page)
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
 
-  await page.getByRole('button', { name: 'Français' }).click()
+  await page.getByTestId('toggle-language').click()
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr')
 })
 

@@ -53,6 +53,22 @@ test('playing a guess never mutates the previous state', () => {
   expect(JSON.stringify(before)).toBe(snapshot)
 })
 
+test('a raised limit gives the board back after a loss', () => {
+  // What "keep playing" does: the same guesses replayed against a higher limit
+  // put the game back in play, so no extra state has to be kept anywhere.
+  let state = createGame(all, 'stick')
+  const wrong = setCell(EMPTY_GRID, 0, 'minecraft:diamond')
+  for (let i = 0; i < MAX_GUESSES; i++) state = applyGuess(state, wrong, index)
+  expect(state.status).toBe('lost')
+
+  let replayed = createGame(all, 'stick')
+  for (const guess of state.guesses) {
+    replayed = applyGuess(replayed, guess, index, Number.POSITIVE_INFINITY)
+  }
+  expect(replayed.status).toBe('playing')
+  expect(replayed.guesses.length).toBe(MAX_GUESSES)
+})
+
 test('an unknown recipe is refused', () => {
   expect(() => createGame(all, 'not_a_recipe')).toThrow()
 })

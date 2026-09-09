@@ -9,10 +9,12 @@ export default {
     highContrast: 'Contraste élevé',
     on: 'Activé',
     off: 'Désactivé',
-    language: 'English',
+    language: 'Langue',
+    languageValue: 'Français',
     source: 'Code source'
   },
   board: {
+    guessCounterOver: 'Essai {n}, hors limite',
     guessesLeft: 'aucun essai restant | 1 essai restant | {count} essais restants',
     craft: 'Fabriquer',
     clear: 'Vider la grille',
@@ -26,7 +28,7 @@ export default {
   },
   result: {
     won: 'Fabriqué en {count} essai | Fabriqué en {count} essais',
-    lost: 'Plus d\'essais',
+    lost: 'Partie perdue',
     solution: 'La recette était {name}',
     share: 'Copier le résultat',
     copied: 'Copié',
@@ -55,7 +57,15 @@ export default {
     distribution: 'Répartition des essais',
     empty: 'Terminez une partie du jour pour lancer vos statistiques.'
   },
+  outOfTries: {
+    title: 'Essais épuisés',
+    body: 'Vous avez épuisé vos dix essais. Continuer, ou abandonner et voir la recette ?',
+    note: 'Dans les deux cas, la partie du jour est déjà comptée comme perdue.',
+    keepPlaying: 'Continuer',
+    giveUp: 'Abandonner'
+  },
   a11y: {
+    announceGuessOver: 'Essai {n} : {correct} bien placés, {misplaced} présents mais ailleurs.',
     slotEmpty: 'Ligne {row}, colonne {col} : vide',
     slotFilled: 'Ligne {row}, colonne {col} : {item}',
     slotCorrect: 'Ligne {row}, colonne {col} : {item}, bien placé',

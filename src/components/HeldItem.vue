@@ -12,7 +12,7 @@ const { pointer, selected } = useDragAndDrop()
     v-if="selected && pointer.visible"
     class="held-item"
     :item="selected"
-    :size="40"
+    :size="48"
     :style="{ left: `${pointer.x}px`, top: `${pointer.y}px` }"
   />
 </template>

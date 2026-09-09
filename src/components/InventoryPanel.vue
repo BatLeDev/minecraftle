@@ -12,7 +12,7 @@ import type { ItemId } from '@/utils/types.ts'
 
 const { t } = useI18n()
 const { options } = useOptions()
-const { selected, ingredientHints, attempt, status, clearDraft } = useGame()
+const { selected, ingredientHints, attempt, status, continued, clearDraft } = useGame()
 const { pressIngredient, toggleIngredient } = useDragAndDrop()
 
 /**
@@ -57,7 +57,7 @@ function label (item: ItemId) {
       >
         <ItemIcon
           :item="item"
-          :size="40"
+          :size="48"
         />
       </button>
     </div>
@@ -69,19 +69,23 @@ function label (item: ItemId) {
       >
         {{ $t('board.clear') }}
       </McButton>
-      <p>{{ $t('board.guessCounter', { n: attempt, total: MAX_GUESSES }) }}</p>
+      <p>
+        {{ continued
+          ? $t('board.guessCounterOver', { n: attempt })
+          : $t('board.guessCounter', { n: attempt, total: MAX_GUESSES }) }}
+      </p>
     </div>
   </section>
 </template>
 
 <style scoped>
 .inventory {
-  padding: 0.9rem;
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   align-items: center;
-  width: 22rem;
+  width: 100%;
 }
 
 .inventory h2 {
@@ -90,10 +94,10 @@ function label (item: ItemId) {
   white-space: nowrap;
 }
 
-/* Six to a row, as the box width allows, and touching like the real inventory. */
+/* Six to a row, touching like the real inventory. */
 .slots {
   display: grid;
-  grid-template-columns: repeat(6, 3rem);
+  grid-template-columns: repeat(6, var(--slot-size));
 }
 
 .footer {

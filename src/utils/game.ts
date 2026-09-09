@@ -61,7 +61,12 @@ export function createGame (recipes: RecipeMap, solution: string): GameState {
 export function applyGuess (
   state: GameState,
   guess: Grid,
-  index: Map<string, string>
+  index: Map<string, string>,
+  /**
+   * How many attempts are allowed. Raised when a player who has run out chooses
+   * to keep going rather than be shown the answer.
+   */
+  limit: number = MAX_GUESSES
 ): GameState {
   if (state.status !== 'playing') return state
 
@@ -69,7 +74,7 @@ export function applyGuess (
   const crafted = craft(index, guess)
   const guesses = [...state.guesses, guess]
   const won = crafted === state.solution
-  const status: GameStatus = won ? 'won' : guesses.length >= MAX_GUESSES ? 'lost' : 'playing'
+  const status: GameStatus = won ? 'won' : guesses.length >= limit ? 'lost' : 'playing'
 
   return {
     ...state,

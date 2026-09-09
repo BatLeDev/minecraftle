@@ -6,6 +6,7 @@ import HeldItem from './components/HeldItem.vue'
 import HowToPlayDialog from './components/HowToPlayDialog.vue'
 import InventoryPanel from './components/InventoryPanel.vue'
 import McButton from './components/McButton.vue'
+import OutOfTriesDialog from './components/OutOfTriesDialog.vue'
 import ResultDialog from './components/ResultDialog.vue'
 import StatsDialog from './components/StatsDialog.vue'
 import { useDragAndDrop } from './composables/useDragAndDrop.ts'
@@ -17,14 +18,15 @@ import { Hint } from './utils/types.ts'
 const { t, locale } = useI18n()
 const { options } = useOptions()
 const {
-  game, draft, mode, status, guessesLeft, solution, draftOutput, craftedOutputs,
-  placeAt, clearAt, submit, playRandom, playDaily
+  game, draft, mode, status, guessesLeft, solution, draftOutput, craftedOutputs, continued,
+  placeAt, clearAt, submit, playRandom, playDaily, keepPlaying
 } = useGame()
 const { pressSlot, enterSlot, releaseSlot } = useDragAndDrop()
 
 const howToOpen = ref(false)
 const statsOpen = ref(false)
 const resultOpen = ref(false)
+const outOfTriesOpen = ref(false)
 
 const showDraft = computed(() => status.value === 'playing')
 
@@ -41,10 +43,23 @@ watch(() => options.value.locale, value => {
   document.documentElement.lang = value
 }, { immediate: true })
 
-// The end-of-game dialog opens once per finished game, and stays closable.
+// A win reveals the result straight away. Running out of attempts asks first,
+// so a player who wants to keep looking is not told the answer.
 watch(status, (value, previous) => {
-  if (value !== 'playing' && previous === 'playing') resultOpen.value = true
+  if (previous !== 'playing') return
+  if (value === 'won') resultOpen.value = true
+  else if (value === 'lost') outOfTriesOpen.value = true
 })
+
+function giveUp () {
+  outOfTriesOpen.value = false
+  resultOpen.value = true
+}
+
+function keepGoing () {
+  outOfTriesOpen.value = false
+  keepPlaying()
+}
 
 // Spoken feedback after each attempt. Nothing else announces the result: the
 // colours and the board are silent to a screen reader once focus stays put.
@@ -58,12 +73,15 @@ watch(() => game.value.guesses.length, count => {
     announcement.value = t('a11y.announceLost', { name })
   } else {
     const hints = game.value.hints[count - 1]
-    announcement.value = t('a11y.announceGuess', {
+    const counts = {
       n: count,
       correct: hints.filter(h => h === Hint.Correct).length,
-      misplaced: hints.filter(h => h === Hint.Misplaced).length,
-      left: guessesLeft.value
-    })
+      misplaced: hints.filter(h => h === Hint.Misplaced).length
+    }
+    // Past the limit there is no remaining count to report.
+    announcement.value = continued.value
+      ? t('a11y.announceGuessOver', counts)
+      : t('a11y.announceGuess', { ...counts, left: guessesLeft.value })
   }
 })
 
@@ -102,18 +120,26 @@ function toggleLocale () {
           <McButton @click="statsOpen = true">
             {{ $t('nav.stats') }}
           </McButton>
-          <McButton @click="toggleLocale">
-            {{ $t('nav.language') }}
+        </div>
+        <!-- Label and value on a full-width row, as the game's options menu
+             reads, so each state is legible instead of guessed. -->
+        <div class="nav-row">
+          <McButton
+            :aria-pressed="options.highContrast"
+            data-testid="toggle-contrast"
+            @click="options.highContrast = !options.highContrast"
+          >
+            <span>{{ $t('nav.highContrast') }} :</span>
+            <span>{{ options.highContrast ? $t('nav.on') : $t('nav.off') }}</span>
           </McButton>
         </div>
         <div class="nav-row">
-          <!-- Label and value, as the game's own options menu reads, so the
-               state is legible instead of guessed from the button's look. -->
           <McButton
-            :aria-pressed="options.highContrast"
-            @click="options.highContrast = !options.highContrast"
+            data-testid="toggle-language"
+            @click="toggleLocale"
           >
-            {{ $t('nav.highContrast') }} : {{ options.highContrast ? $t('nav.on') : $t('nav.off') }}
+            <span>{{ $t('nav.language') }} :</span>
+            <span>{{ $t('nav.languageValue') }}</span>
           </McButton>
         </div>
       </nav>
@@ -170,6 +196,11 @@ function toggleLocale () {
     </main>
   </div>
 
+  <OutOfTriesDialog
+    v-model="outOfTriesOpen"
+    @keep-playing="keepGoing"
+    @give-up="giveUp"
+  />
   <HowToPlayDialog v-model="howToOpen" />
   <StatsDialog v-model="statsOpen" />
   <ResultDialog v-model="resultOpen" />
@@ -177,9 +208,8 @@ function toggleLocale () {
 
 <style scoped>
 .page {
-  /* The whole column matches the panels, so the buttons line up with the board
-     instead of overhanging it. */
-  width: 22rem;
+  /* Wide enough to leave the crafting row the margins the game gives it. */
+  width: 26rem;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -194,8 +224,7 @@ function toggleLocale () {
 .nav-row {
   display: flex;
   gap: 0.5rem;
-  /* Small enough that the longest label still fits a third of the row. */
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 
 /* Equal widths, as the game's menus lay their buttons out. */
@@ -224,5 +253,9 @@ footer {
 
 footer a {
   color: var(--button-text-hover);
+  /* The browser's default underline sits on the glyph baseline and collides
+     with the descenders of this pixel font. */
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
 }
 </style>

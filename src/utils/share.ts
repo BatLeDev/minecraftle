@@ -41,7 +41,9 @@ export function dayToIsoDate (day: number): string {
  */
 export function shareText ({ day, guesses, hints, won, highContrast = false }: ShareOptions): string {
   const palette = highContrast ? PALETTE.highContrast : PALETTE.standard
-  const score = won ? String(hints.length) : 'X'
+  // A win found after the ten attempts ran out still reports X: the puzzle was
+  // already recorded as a loss when the limit was reached.
+  const score = won && hints.length <= MAX_GUESSES ? String(hints.length) : 'X'
   const lines = [`Minecraftle ${dayToIsoDate(day)} ${score}/${MAX_GUESSES}`, '']
 
   hints.forEach((guessHints, g) => {

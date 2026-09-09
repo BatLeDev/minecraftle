@@ -117,7 +117,7 @@ function onKeydown (event: KeyboardEvent, i: number) {
       <ItemIcon
         v-if="output"
         :item="output"
-        :size="56"
+        :size="48"
       />
     </button>
     <div
@@ -130,7 +130,7 @@ function onKeydown (event: KeyboardEvent, i: number) {
       <ItemIcon
         v-if="output"
         :item="output"
-        :size="56"
+        :size="48"
       />
     </div>
   </div>
@@ -139,21 +139,23 @@ function onKeydown (event: KeyboardEvent, i: number) {
 <style scoped>
 .crafting-table {
   display: flex;
-  gap: 0.5rem;
   align-items: center;
   justify-content: center;
-  width: 22rem;
-  max-width: 100%;
-  /* Tighter than the generic panel padding: the crafting window in the game
-     leaves only a small margin around the grid. */
-  padding: 0.9rem;
+  width: 100%;
+  /* Less air above and below than at the sides, as the crafting window has. */
+  padding: 0.6rem 0.9rem;
 }
 
-/* Three columns of 3rem slots, touching, as in the crafting window. */
+/* Gaps taken from the crafting window texture, where the arrow sits closer to
+   the grid than to the result. */
+.crafting-table .craft-arrow {
+  margin: 0 1.25rem 0 1rem;
+}
+
+/* Three columns of touching slots, as in the crafting window. */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 3rem);
-  width: 9rem;
+  grid-template-columns: repeat(3, var(--slot-size));
 }
 
 </style>

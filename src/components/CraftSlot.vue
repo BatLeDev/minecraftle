@@ -73,7 +73,7 @@ const label = computed(() => {
     <ItemIcon
       v-if="item"
       :item="item"
-      :size="40"
+      :size="48"
     />
   </button>
   <div
@@ -87,7 +87,7 @@ const label = computed(() => {
     <ItemIcon
       v-if="item"
       :item="item"
-      :size="40"
+      :size="48"
     />
   </div>
 </template>

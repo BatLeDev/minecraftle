@@ -97,17 +97,21 @@ async function copy () {
 
 .summary {
   max-height: 14rem;
+  /* A framed, padded box: scrolled to the end, the last rows previously ran
+     straight into the buttons with nothing to mark where the list stopped. */
+  padding: 0.5rem;
   margin: 0 0 0.75rem;
   overflow-y: auto;
   font-family: inherit;
   line-height: 1.15;
   text-align: center;
+  background: rgba(0, 0, 0, 0.06);
+  box-shadow: inset 2px 2px 0 var(--slot-dark), inset -2px -2px 0 var(--slot-light);
 }
 
 .actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.5rem;
-  justify-content: flex-end;
 }
 </style>

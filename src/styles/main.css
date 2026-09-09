@@ -32,9 +32,15 @@
   --button-text-inset-dark: #0006;
   --button-active-text-inset-light: #fff5;
 
-  --slot-size: 3rem;
+  /* Everything is an exact 3x of the game's own texture: an 18px slot holding a
+     16px icon, and a 26px result slot. The atlas cells are 48px, so an icon is
+     drawn pixel for pixel with no resampling. */
+  --slot-size: 3.375rem;
+  --icon-size: 3rem;
   --slot-dark: #373737;
-  --slot-light: #ffffff;
+  /* Light grey, not white: pure white made the line between touching slots far
+     harsher than the game's own texture. */
+  --slot-light: #dfdfdf;
   --panel-light: #ffffff;
   --panel-dark: #555555;
   --panel-text: #3f3f3f;
@@ -127,16 +133,19 @@ header {
   justify-content: center;
   width: 100%;
   min-height: 2rem;
-  padding: 0.35rem 0.75rem;
+  gap: 0.4em;
+  padding: 0.4rem 0.9rem;
   color: var(--button-text);
-  text-shadow: 2px 2px var(--button-text-shadow);
+  /* One pixel, not two: the game's shadow is a single texture pixel, and at
+     this body size a 2px offset smears the glyphs together. */
+  text-shadow: 1px 1px var(--button-text-shadow);
   box-shadow: inset -2px -4px var(--button-text-inset-dark), inset 2px 2px var(--button-active-inset-light);
 }
 
 .mc-button:hover:not(:disabled) .title,
 .mc-button:focus-visible .title {
   color: var(--button-text-hover);
-  text-shadow: 2px 2px var(--button-text-hover-shadow);
+  text-shadow: 1px 1px var(--button-text-hover-shadow);
   background-color: var(--button-background-hover);
 }
 
@@ -175,9 +184,14 @@ header {
   box-shadow: inset 2px 2px 0 var(--slot-dark), inset -2px -2px 0 var(--slot-light);
 }
 
-/* The result slot is drawn larger than the inputs, as in the crafting window. */
+/* The result slot is drawn larger than the inputs and framed with a light ring,
+   as in the crafting window. */
 .slot--output {
-  --slot-size: 4.25rem;
+  --slot-size: 4.875rem;
+  box-shadow:
+    inset 2px 2px 0 var(--slot-dark),
+    inset -2px -2px 0 var(--slot-light),
+    0 0 0 3px var(--slot-light);
 }
 
 button.slot {

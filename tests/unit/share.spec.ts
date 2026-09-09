@@ -47,6 +47,13 @@ test('each attempt adds three rows', () => {
   expect(text.split('\n').filter(line => /[\u2B1B\u2B1C\u{1F7E9}\u{1F7E8}]/u.test(line)).length).toBe(6)
 })
 
+test('a win past the ten attempts still reports X', () => {
+  // Carrying on after the limit does not turn a recorded loss into a win.
+  const eleven = Array.from({ length: 11 }, () => hints[0])
+  const grids = Array.from({ length: 11 }, () => guesses[0])
+  expect(shareText({ day, guesses: grids, hints: eleven, won: true })).toContain('X/10')
+})
+
 test('there is no trailing blank line', () => {
   expect(shareText({ day, guesses, hints, won: true }).endsWith('⬛')).toBe(true)
 })
