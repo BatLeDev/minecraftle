@@ -23,16 +23,23 @@ npm run quality      # lint, types, build, tests
 ## Data
 
 Recipes, item names and the sprite atlas under `src/data` and `src/assets` are
-generated and committed, so the build needs no network:
+generated and committed:
 
 ```bash
 npm run gen-data
 ```
 
-It reads the vendored recipes and icons from `scripts/source/`, pulls the
-official Minecraft item names for English and French from
-[misode/mcmeta](https://github.com/misode/mcmeta), and stitches the icons into a
-single sprite atlas. Re-run it only when the recipe set changes.
+Recipes and item names come from [misode/mcmeta](https://github.com/misode/mcmeta),
+pinned to a Minecraft release by the `MC_VERSION` constant at the top of
+`scripts/gen-data.ts`. Item icons come from `scripts/source/items.json`, vendored
+from the upstream project — these are the rendered inventory icons, which no
+public asset repository ships.
+
+**Nothing reads mcmeta at build time or at runtime.** This script is run by hand
+and its output is committed, so their servers are only contacted when a developer
+deliberately regenerates. To follow a new Minecraft version, bump `MC_VERSION`,
+re-run, and review the diff; recipes whose result has no icon are reported and
+skipped.
 
 ## Licence
 
