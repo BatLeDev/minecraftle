@@ -18,8 +18,10 @@ const { selected, select, ingredientHints } = useGame()
  */
 function tint (item: ItemId) {
   const hint = ingredientHints.value.get(item)
-  if (hint === Hint.Correct) return 'bg-correct'
-  if (hint === Hint.Misplaced) return 'bg-misplaced'
+  // The corner shape doubles the colour, as on the board: colour alone would
+  // leave a player with a colour vision deficiency nothing to read.
+  if (hint === Hint.Correct) return ['bg-correct', 'slot-mark-correct']
+  if (hint === Hint.Misplaced) return ['bg-misplaced', 'slot-mark-misplaced']
   if (hint === Hint.Absent) return 'bg-absent'
   return 'inventory-slot--untried'
 }
@@ -86,5 +88,31 @@ function label (item: ItemId) {
 .inventory-slot--selected {
   outline: 2px solid rgb(var(--v-theme-primary));
   outline-offset: 2px;
+}
+
+.slot-mark-correct,
+.slot-mark-misplaced {
+  position: relative;
+}
+
+.slot-mark-correct::after,
+.slot-mark-misplaced::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 9px;
+  height: 9px;
+  background-color: rgba(0, 0, 0, 0.72);
+}
+
+.slot-mark-correct::after {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.slot-mark-misplaced::after {
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.72);
 }
 </style>

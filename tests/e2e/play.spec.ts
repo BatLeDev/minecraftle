@@ -5,7 +5,7 @@ test('the board and the ingredients are there on load', async ({ page }) => {
   await openGame(page)
   await expect(page.getByTestId('draft-grid')).toBeVisible()
   await expect(page.getByTestId('ingredient-minecraft:stick')).toBeVisible()
-  await expect(page.getByText('10 tries left')).toBeVisible()
+  await expect(page.getByText('10 tries left', { exact: true })).toBeVisible()
 })
 
 test('crafting the recipe of the day wins the game', async ({ page }) => {
@@ -24,7 +24,7 @@ test('a wrong guess is kept on the board and costs a try', async ({ page }) => {
   await craft(page, wrongGrid())
 
   await expect(page.getByTestId('guess-1')).toBeVisible()
-  await expect(page.getByText('9 tries left')).toBeVisible()
+  await expect(page.getByText('9 tries left', { exact: true })).toBeVisible()
   await expect(page.getByRole('dialog')).toHaveCount(0)
 })
 
@@ -41,7 +41,7 @@ test('clearing empties the grid without costing a try', async ({ page }) => {
 
   await page.getByRole('button', { name: 'Clear grid' }).click()
   await expect(page.getByRole('button', { name: 'Craft' })).toBeDisabled()
-  await expect(page.getByText('10 tries left')).toBeVisible()
+  await expect(page.getByText('10 tries left', { exact: true })).toBeVisible()
 })
 
 test('clicking a filled slot with nothing held empties it', async ({ page }) => {

@@ -57,6 +57,11 @@ export default {
     selectIngredient: 'Select {item}',
     selectedIngredient: '{item}, selected',
     guessNumber: 'Try {n}',
+    announceGuess: 'Try {n}: {correct} in the right place, {misplaced} in the recipe but elsewhere. {left} tries left.',
+    announceWon: 'Crafted in {n} tries. The recipe was {name}.',
+    announceLost: 'Out of tries. The recipe was {name}.',
+    markCorrect: 'marked with a corner wedge',
+    markMisplaced: 'marked with a ring',
     currentGuess: 'Current try'
   },
   footer: {

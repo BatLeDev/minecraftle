@@ -10,14 +10,17 @@ import InventoryPanel from './components/InventoryPanel.vue'
 import HowToPlayDialog from './components/HowToPlayDialog.vue'
 import ResultDialog from './components/ResultDialog.vue'
 import StatsDialog from './components/StatsDialog.vue'
-import { useGame } from './composables/useGame.ts'
+import { useGame, recipes } from './composables/useGame.ts'
 import { useOptions } from './composables/useOptions.ts'
+import { useReturnFocus } from './composables/useReturnFocus.ts'
+import { itemName } from './utils/items.ts'
+import { Hint } from './utils/types.ts'
 
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 const theme = useTheme()
 const { options } = useOptions()
 const {
-  game, draft, mode, status, canSubmit, guessesLeft,
+  game, draft, mode, status, canSubmit, guessesLeft, solution,
   placeAt, clearAt, clearDraft, submit, playRandom, playDaily
 } = useGame()
 
@@ -25,13 +28,43 @@ const howToOpen = ref(false)
 const statsOpen = ref(false)
 const resultOpen = ref(false)
 
+useReturnFocus(howToOpen)
+useReturnFocus(statsOpen)
+useReturnFocus(resultOpen)
+
 // The palette lives in two themes rather than in component styles, so the
 // high-contrast switch is one call and nothing has to know the colours.
 watch(() => options.value.highContrast, high => {
   theme.change(high ? 'contrast' : 'minecraftle')
 }, { immediate: true })
 
-watch(() => options.value.locale, value => { locale.value = value }, { immediate: true })
+watch(() => options.value.locale, value => {
+  locale.value = value
+  // The document language has to follow the interface, or a screen reader keeps
+  // reading French text with an English voice.
+  document.documentElement.lang = value
+}, { immediate: true })
+
+// Spoken feedback after each attempt. Nothing else announces the result: the
+// colours and the board are silent to a screen reader once focus stays put.
+const announcement = ref('')
+watch(() => game.value.guesses.length, count => {
+  if (!count) { announcement.value = ''; return }
+  const name = itemName(recipes[solution.value].output, options.value.locale)
+  if (status.value === 'won') {
+    announcement.value = t('a11y.announceWon', { n: count, name })
+  } else if (status.value === 'lost') {
+    announcement.value = t('a11y.announceLost', { name })
+  } else {
+    const hints = game.value.hints[count - 1]
+    announcement.value = t('a11y.announceGuess', {
+      n: count,
+      correct: hints.filter(h => h === Hint.Correct).length,
+      misplaced: hints.filter(h => h === Hint.Misplaced).length,
+      left: guessesLeft.value
+    })
+  }
+})
 
 // The end-of-game dialog opens once per finished game, and stays closable.
 watch(status, (value, previous) => {
@@ -51,8 +84,10 @@ function toggleLocale () {
       flat
       density="comfortable"
     >
-      <v-app-bar-title class="font-weight-bold">
-        {{ $t('title') }}
+      <v-app-bar-title>
+        <h1 class="text-h6 font-weight-bold ma-0">
+          {{ $t('title') }}
+        </h1>
       </v-app-bar-title>
 
       <v-btn
@@ -111,6 +146,13 @@ function toggleLocale () {
     </v-app-bar>
 
     <v-main>
+      <!-- Polite, so it waits for a screen reader to finish rather than cutting in. -->
+      <p
+        class="sr-only"
+        aria-live="polite"
+        role="status"
+      >{{ announcement }}</p>
+
       <v-container class="board">
         <p class="text-center text-medium-emphasis mb-4">
           {{ $t('tagline') }}
@@ -214,5 +256,32 @@ function toggleLocale () {
 <style scoped>
 .board {
   max-width: 32rem;
+}
+
+/* Announced but not drawn: the board already shows this to anyone who can see it. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+</style>
+
+<style>
+/* Motion is decorative here, so honour a system-wide request to drop it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 </style>

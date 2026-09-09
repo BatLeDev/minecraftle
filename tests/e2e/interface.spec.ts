@@ -6,7 +6,7 @@ test('the interface and item names switch to French', async ({ page }) => {
   await page.getByRole('button', { name: 'Français' }).click()
 
   await expect(page.getByRole('button', { name: 'Fabriquer' })).toBeVisible()
-  await expect(page.getByText('10 essais restants')).toBeVisible()
+  await expect(page.getByText('10 essais restants', { exact: true })).toBeVisible()
   await expect(page.getByTestId('ingredient-minecraft:stick'))
     .toHaveAccessibleName('Choisir Bâton')
 })

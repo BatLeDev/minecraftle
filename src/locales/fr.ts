@@ -57,6 +57,11 @@ export default {
     selectIngredient: 'Choisir {item}',
     selectedIngredient: '{item}, sélectionné',
     guessNumber: 'Essai {n}',
+    announceGuess: 'Essai {n} : {correct} bien placés, {misplaced} présents mais ailleurs. {left} essais restants.',
+    announceWon: 'Fabriqué en {n} essais. La recette était {name}.',
+    announceLost: 'Plus d\'essais. La recette était {name}.',
+    markCorrect: 'marqué d\'un coin plein',
+    markMisplaced: 'marqué d\'un anneau',
     currentGuess: 'Essai en cours'
   },
   footer: {

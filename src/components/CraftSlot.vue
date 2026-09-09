@@ -33,6 +33,20 @@ const colour = computed(() => {
   return 'bg-absent'
 })
 
+/**
+ * A shape in the corner, doubling every colour.
+ *
+ * Colour alone would make the hints unreadable for a player with a colour
+ * vision deficiency — WCAG 1.4.1. The high-contrast palette helps, but it is an
+ * option someone has to know about first, so the second channel is always on.
+ */
+const marker = computed(() => {
+  if (!props.item) return null
+  if (props.hint === Hint.Correct) return 'slot-mark-correct'
+  if (props.hint === Hint.Misplaced) return 'slot-mark-misplaced'
+  return null
+})
+
 const label = computed(() => {
   const position = { row: row.value, col: col.value }
   if (!props.item) return t('a11y.slotEmpty', position)
@@ -50,7 +64,7 @@ const label = computed(() => {
   <v-btn
     v-if="interactive"
     class="craft-slot"
-    :class="colour"
+    :class="[colour, marker]"
     :width="size"
     :height="size"
     :aria-label="label"
@@ -71,7 +85,7 @@ const label = computed(() => {
   <v-sheet
     v-else
     class="craft-slot d-flex align-center justify-center"
-    :class="colour"
+    :class="[colour, marker]"
     :width="size"
     :height="size"
     rounded="sm"
@@ -95,5 +109,33 @@ const label = computed(() => {
 
 .slot-blank {
   background-color: rgb(var(--v-theme-slot));
+}
+
+.slot-mark-correct,
+.slot-mark-misplaced {
+  position: relative;
+}
+
+.slot-mark-correct::after,
+.slot-mark-misplaced::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 9px;
+  height: 9px;
+  background-color: rgba(0, 0, 0, 0.72);
+}
+
+/* a solid corner wedge for a slot that is right */
+.slot-mark-correct::after {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+/* a ring for a slot whose item belongs elsewhere */
+.slot-mark-misplaced::after {
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.72);
 }
 </style>

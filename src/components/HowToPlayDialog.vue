@@ -4,9 +4,9 @@ import { Hint } from '@/utils/types.ts'
 const model = defineModel<boolean>({ required: true })
 
 const legend = [
-  { hint: Hint.Correct, colour: 'bg-correct', key: 'correct' },
-  { hint: Hint.Misplaced, colour: 'bg-misplaced', key: 'misplaced' },
-  { hint: Hint.Absent, colour: 'bg-absent', key: 'absent' }
+  { hint: Hint.Correct, colour: 'bg-correct', mark: 'slot-mark-correct', key: 'correct', mark_key: 'markCorrect' },
+  { hint: Hint.Misplaced, colour: 'bg-misplaced', mark: 'slot-mark-misplaced', key: 'misplaced', mark_key: 'markMisplaced' },
+  { hint: Hint.Absent, colour: 'bg-absent', mark: null, key: 'absent', mark_key: null }
 ] as const
 </script>
 
@@ -35,13 +35,19 @@ const legend = [
           >
             <dt>
               <v-sheet
-                :class="entry.colour"
+                :class="[entry.colour, entry.mark]"
                 width="24"
                 height="24"
                 rounded="sm"
               />
             </dt>
-            <dd>{{ $t(`howTo.${entry.key}`) }}</dd>
+            <dd>
+              {{ $t(`howTo.${entry.key}`) }}
+              <span
+                v-if="entry.mark_key"
+                class="text-medium-emphasis"
+              >({{ $t(`a11y.${entry.mark_key}`) }})</span>
+            </dd>
           </template>
         </dl>
 
@@ -72,5 +78,31 @@ const legend = [
 
 .legend dd {
   margin: 0;
+}
+
+.slot-mark-correct,
+.slot-mark-misplaced {
+  position: relative;
+}
+
+.slot-mark-correct::after,
+.slot-mark-misplaced::after {
+  content: '';
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 7px;
+  height: 7px;
+  background-color: rgba(0, 0, 0, 0.72);
+}
+
+.slot-mark-correct::after {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.slot-mark-misplaced::after {
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.72);
 }
 </style>
