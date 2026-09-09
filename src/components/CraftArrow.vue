@@ -12,7 +12,7 @@
   >
     <polygon
       points="0,5 13,5 13,0 22,7 13,14 13,9 0,9"
-      fill="var(--slot-background)"
+      fill="var(--slot)"
     />
   </svg>
 </template>

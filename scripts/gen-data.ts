@@ -34,9 +34,12 @@ const LANG_URL = (code: string) =>
 const root = (p: string) => fileURLToPath(new URL('../' + p, import.meta.url))
 
 /**
- * Side of one atlas cell, in pixels. 48 keeps the 16px sources on an exact x3
- * nearest-neighbour upscale, which is what preserves the pixel art; the handful
- * of larger sources are smooth renders that downscale fine.
+ * Side of one atlas cell, in pixels, and the size a sprite is drawn at.
+ *
+ * 48 is the best the source material allows: 57 of the icons are already 48px
+ * isometric block renders, so they are copied one for one, and the 80 that are
+ * flat 16px textures scale up by exactly three. Anything smaller would squash
+ * the renders, anything larger would blur them.
  */
 const CELL = 48
 

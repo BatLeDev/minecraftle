@@ -14,40 +14,47 @@
 }
 
 /* Values carried over from the upstream stylesheet, so the game looks the same. */
+/*
+ * Every value below is sampled from the game's own GUI textures at
+ * 26.2 (gui/container/crafting_table.png and gui/sprites/widget/button*.png),
+ * and every length is an exact 2x of them: an 18px slot becomes 36, a 26px
+ * result slot becomes 52, a 1px bevel becomes 2. The sprite atlas is generated
+ * at 32px cells for the same reason, so nothing is ever resampled.
+ */
 :root {
-  --inv-background: #c6c6c6;
-  --slot-background: #8b8b8b;
-  --slot-background-hover: #9f9f9f;
-  --slot-shadow: rgba(55, 55, 55, 0.7);
-  --slot-inset: #fefefe;
-
-  --button-text: #fff;
-  --button-text-shadow: #000a;
-  --button-text-hover: #ffffa0;
-  --button-text-hover-shadow: #202013cc;
-  --button-background: #999;
-  --button-background-hover: rgba(100, 100, 255, 0.45);
-  --button-active-inset-dark: #0004;
-  --button-active-inset-light: #fff7;
-  --button-text-inset-dark: #0006;
-  --button-active-text-inset-light: #fff5;
-
-  /* Everything is an exact 3x of the game's own texture: an 18px slot holding a
-     16px icon, and a 26px result slot. The atlas cells are 48px, so an icon is
-     drawn pixel for pixel with no resampling. */
-  --slot-size: 3.375rem;
-  --icon-size: 3rem;
-  --slot-dark: #373737;
-  /* Light grey, not white: pure white made the line between touching slots far
-     harsher than the game's own texture. */
-  --slot-light: #dfdfdf;
+  --panel: #c6c6c6;
   --panel-light: #ffffff;
   --panel-dark: #555555;
-  --panel-text: #3f3f3f;
+
+  --slot: #8b8b8b;
+  --slot-hover: #9f9f9f;
+  --slot-dark: #373737;
+  --slot-light: #ffffff;
+  /* Three times the texture's 18px slot, because the sprites are 48px: see the
+     note on CELL in scripts/gen-data.ts. The chrome around them stays at 2x, so
+     the whole board still fits a phone rather than the 528px a strict 3x of the
+     176px window would need. */
+  --slot-size: 54px;
+  --icon-size: 48px;
+
+  --button: #6f6f6f;
+  --button-light: #aaaaaa;
+  --button-dark: #565656;
+  --button-text: #e0e0e0;
+  --button-text-shadow: #383838;
+  --button-hover: #757575;
+  --button-hover-light: #afafaf;
+  --button-hover-dark: #5c5c5c;
+  --button-hover-text: #ffffa0;
+  --button-hover-text-shadow: #3f3f28;
+  --button-off-text: #a0a0a0;
+  --button-off-text-shadow: #282828;
+
+  --ink: #404040;
 
   --hint-correct: hsla(92, 100%, 37%, 0.859);
   --hint-misplaced: #caa905;
-  --hint-absent: rgb(83, 83, 83);
+  --hint-absent: #535353;
 
   --focus: #ffffa0;
 }
@@ -65,9 +72,11 @@
 
 body {
   margin: 1rem;
+  /* Minecraftia is a bitmap face drawn for 12 or 24 pixels, per its author; at
+     any other size the browser resamples it and the glyphs blur. */
   font-family: Minecraftia, monospace;
-  /* Minecraftia has no built-in leading, so lines would otherwise touch. */
-  line-height: 1.55;
+  font-size: 12px;
+  line-height: 1.6;
   background-image: url('/images/dirt-background.webp');
   /* the held item follows the pointer, so text selection would fight the drag */
   -webkit-user-select: none;
@@ -104,12 +113,11 @@ header {
 
 .inv-background {
   margin-bottom: 10px;
-  color: var(--panel-text);
-  background: var(--inv-background);
+  color: var(--ink);
+  background: var(--panel);
+  /* 1px black, 2px white, 2px dark grey in the texture, doubled. */
   border: 2px solid #000;
-  /* Raised, as the crafting window is: light along the top and left, dark
-     along the bottom and right. */
-  box-shadow: inset 3px 3px 0 var(--panel-light), inset -3px -3px 0 var(--panel-dark);
+  box-shadow: inset 4px 4px 0 var(--panel-light), inset -4px -4px 0 var(--panel-dark);
 }
 
 /* --- button --- */
@@ -117,40 +125,44 @@ header {
   padding: 0;
   overflow: hidden;
   font: inherit;
-  color: var(--inv-background);
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  background: var(--button-background) url('/images/button-background.png') center / cover;
+  background: var(--button);
   border: 2px solid #000;
-  image-rendering: pixelated;
 }
 
 .mc-button .title {
   display: flex;
+  gap: 0.4em;
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 2rem;
-  gap: 0.4em;
-  padding: 0.4rem 0.9rem;
+  min-height: 28px;
+  padding: 6px 12px;
   color: var(--button-text);
-  /* One pixel, not two: the game's shadow is a single texture pixel, and at
-     this body size a 2px offset smears the glyphs together. */
   text-shadow: 1px 1px var(--button-text-shadow);
-  box-shadow: inset -2px -4px var(--button-text-inset-dark), inset 2px 2px var(--button-active-inset-light);
+  box-shadow: inset 2px 2px 0 var(--button-light), inset -2px -4px 0 var(--button-dark);
+}
+
+/* Hovering turns the outer border white and lifts the whole face, exactly as
+   button_highlighted.png does. */
+.mc-button:hover:not(:disabled),
+.mc-button:focus-visible {
+  background: var(--button-hover);
+  border-color: #fff;
 }
 
 .mc-button:hover:not(:disabled) .title,
 .mc-button:focus-visible .title {
-  color: var(--button-text-hover);
-  text-shadow: 1px 1px var(--button-text-hover-shadow);
-  background-color: var(--button-background-hover);
+  color: var(--button-hover-text);
+  text-shadow: 1px 1px var(--button-hover-text-shadow);
+  box-shadow: inset 2px 2px 0 var(--button-hover-light), inset -2px -4px 0 var(--button-hover-dark);
 }
 
 .mc-button:active:not(:disabled) .title {
-  box-shadow: inset -2px -4px var(--button-active-inset-dark), inset 2px 2px var(--button-active-text-inset-light);
+  box-shadow: inset 2px 4px 0 var(--button-dark), inset -2px -2px 0 var(--button-light);
 }
 
 .mc-button:disabled {
@@ -158,7 +170,8 @@ header {
 }
 
 .mc-button:disabled .title {
-  color: #8a8a8a;
+  color: var(--button-off-text);
+  text-shadow: 1px 1px var(--button-off-text-shadow);
 }
 
 /* A visible ring on every focusable control: the browser default disappears
@@ -177,21 +190,18 @@ header {
   width: var(--slot-size);
   height: var(--slot-size);
   padding: 0;
-  background-color: var(--slot-background);
+  background-color: var(--slot);
   border: 0;
-  /* Sunken, the inverse of the panel: dark along the top and left. The white
-     bottom-right edge is what draws the line between touching slots. */
-  box-shadow: inset 2px 2px 0 var(--slot-dark), inset -2px -2px 0 var(--slot-light);
+  /* Sunken, the inverse of the panel: 1px dark on the top and left and 1px
+     white on the bottom and right in the texture, doubled. That white edge is
+     what draws the line between touching slots. */
+  box-shadow: inset 3px 3px 0 var(--slot-dark), inset -3px -3px 0 var(--slot-light);
 }
 
-/* The result slot is drawn larger than the inputs and framed with a light ring,
-   as in the crafting window. */
+/* The result slot is 26px in the texture against the inputs' 18, and carries
+   the same bevel — no extra frame. */
 .slot--output {
-  --slot-size: 4.875rem;
-  box-shadow:
-    inset 2px 2px 0 var(--slot-dark),
-    inset -2px -2px 0 var(--slot-light),
-    0 0 0 3px var(--slot-light);
+  --slot-size: 78px;
 }
 
 button.slot {
@@ -207,7 +217,7 @@ button.slot:disabled {
 }
 
 button.slot:hover:not(:disabled) {
-  background-color: var(--slot-background-hover);
+  background-color: var(--slot-hover);
 }
 
 .slot--correct { background-color: var(--hint-correct); }

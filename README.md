@@ -10,6 +10,9 @@ A fork of [zachpmanson/minecraftle](https://github.com/zachpmanson/minecraftle),
 rewritten as a static Vue 3 bundle with no backend and no database. See
 [NOTICE.md](./NOTICE.md).
 
+Work is in progress on matching the game's interface pixel for pixel — see
+[WIP.md](./WIP.md) for where that stands.
+
 ## Development
 
 ```bash
