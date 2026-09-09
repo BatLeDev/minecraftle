@@ -62,6 +62,7 @@ async function main () {
   const items = JSON.parse(await readFile(root('scripts/source/items.json'), 'utf8')) as Record<string, SourceItem>
   const recipes = JSON.parse(await readFile(root('scripts/source/recipes.json'), 'utf8')) as Record<string, SourceRecipe>
   const overrides = JSON.parse(await readFile(root('scripts/source/name-overrides.json'), 'utf8')) as Record<string, Names>
+  const ingredients = JSON.parse(await readFile(root('scripts/source/ingredients.json'), 'utf8')) as string[]
 
   const ids = Object.keys(items).sort()
 
@@ -156,9 +157,17 @@ async function main () {
   }
   await writeFile(root('src/data/recipes.json'), JSON.stringify(outRecipes, null, 2) + '\n')
 
+  // --- ingredients -------------------------------------------------------
+  // The palette the player builds from: a fixed shortlist, not the whole
+  // catalogue, which is what keeps the puzzle tractable.
+  for (const id of ingredients) {
+    if (!outItems[id]) throw new Error(`ingredient ${id} is not a known item`)
+  }
+  await writeFile(root('src/data/ingredients.json'), JSON.stringify(ingredients, null, 2) + '\n')
+
   const atlasKb = (atlas.length / 1024).toFixed(0)
   console.log(`${ids.length} items → atlas ${cols}x${rows} of ${CELL}px (${atlasKb} kB)`)
-  console.log(`${Object.keys(outRecipes).length} recipes validated`)
+  console.log(`${Object.keys(outRecipes).length} recipes and ${ingredients.length} ingredients validated`)
 }
 
 await main()

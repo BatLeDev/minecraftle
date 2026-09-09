@@ -27,6 +27,8 @@ export const Hint = {
   Correct: 2
 } as const
 
+// A value and a type may share a name in TypeScript; the rule cannot see that.
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Hint = typeof Hint[keyof typeof Hint]
 
 export type Hints = readonly Hint[]

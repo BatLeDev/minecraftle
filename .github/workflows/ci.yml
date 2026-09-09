@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run type-check
+      - run: npm run test-unit
+      # Only chromium: the suite drives one browser, and installing the other
+      # two would triple the setup for nothing.
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test-e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-output
+          path: tests/output
+          retention-days: 7
