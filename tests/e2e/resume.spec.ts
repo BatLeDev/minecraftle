@@ -10,7 +10,7 @@ test('a game in progress survives a reload', async ({ page }) => {
 
   await page.reload()
   await expect(page.getByTestId('guess-1')).toBeVisible()
-  await expect(page.getByText('9 tries left')).toBeVisible()
+  await expect(page.getByText('Guess 2/10')).toBeVisible()
 })
 
 test('a half-filled grid survives a reload', async ({ page }) => {

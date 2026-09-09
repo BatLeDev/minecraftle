@@ -1,0 +1,326 @@
+/* Fonts are served locally rather than from a CDN: no third party, and no flash
+   of fallback text on a slow connection. Minecraftia replaces the upstream
+   Minecraft font, which has no accented capitals — see NOTICE.md. */
+@font-face {
+  font-family: Minecraftia;
+  src: url('/fonts/Minecraftia-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Minecrafter;
+  src: url('/fonts/Minecrafter-Cracked.ttf') format('truetype');
+  font-display: swap;
+}
+
+/* Values carried over from the upstream stylesheet, so the game looks the same. */
+:root {
+  --inv-background: #c6c6c6;
+  --slot-background: #8b8b8b;
+  --slot-background-hover: #9f9f9f;
+  --slot-shadow: rgba(55, 55, 55, 0.7);
+  --slot-inset: #fefefe;
+
+  --button-text: #fff;
+  --button-text-shadow: #000a;
+  --button-text-hover: #ffffa0;
+  --button-text-hover-shadow: #202013cc;
+  --button-background: #999;
+  --button-background-hover: rgba(100, 100, 255, 0.45);
+  --button-active-inset-dark: #0004;
+  --button-active-inset-light: #fff7;
+  --button-text-inset-dark: #0006;
+  --button-active-text-inset-light: #fff5;
+
+  --slot-size: 3rem;
+  --slot-dark: #373737;
+  --slot-light: #ffffff;
+  --panel-light: #ffffff;
+  --panel-dark: #555555;
+  --panel-text: #3f3f3f;
+
+  --hint-correct: hsla(92, 100%, 37%, 0.859);
+  --hint-misplaced: #caa905;
+  --hint-absent: rgb(83, 83, 83);
+
+  --focus: #ffffa0;
+}
+
+/* Orange and blue stay apart under every common colour vision deficiency,
+   which green and yellow do not. */
+:root[data-contrast='high'] {
+  --hint-correct: #f5793a;
+  --hint-misplaced: #85c0f9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 1rem;
+  font-family: Minecraftia, monospace;
+  /* Minecraftia has no built-in leading, so lines would otherwise touch. */
+  line-height: 1.55;
+  background-image: url('/images/dirt-background.webp');
+  /* the held item follows the pointer, so text selection would fight the drag */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+h1 {
+  margin: 0;
+  padding: 0.5rem;
+  font-family: Minecrafter, Minecraftia, monospace;
+  font-size: min(3em, 10vw);
+  font-weight: normal;
+  text-align: center;
+}
+
+h2 {
+  margin: 0;
+  font-size: min(1.5em, 10vw);
+  font-weight: bold;
+}
+
+p {
+  margin: 0;
+}
+
+header {
+  color: var(--inv-background);
+}
+
+/* --- the raised light grey surface of an inventory window --- */
+.box {
+  padding: 1.5rem;
+}
+
+.inv-background {
+  margin-bottom: 10px;
+  color: var(--panel-text);
+  background: var(--inv-background);
+  border: 2px solid #000;
+  /* Raised, as the crafting window is: light along the top and left, dark
+     along the bottom and right. */
+  box-shadow: inset 3px 3px 0 var(--panel-light), inset -3px -3px 0 var(--panel-dark);
+}
+
+/* --- button --- */
+.mc-button {
+  padding: 0;
+  overflow: hidden;
+  font: inherit;
+  color: var(--inv-background);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--button-background) url('/images/button-background.png') center / cover;
+  border: 2px solid #000;
+  image-rendering: pixelated;
+}
+
+.mc-button .title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2rem;
+  padding: 0.35rem 0.75rem;
+  color: var(--button-text);
+  text-shadow: 2px 2px var(--button-text-shadow);
+  box-shadow: inset -2px -4px var(--button-text-inset-dark), inset 2px 2px var(--button-active-inset-light);
+}
+
+.mc-button:hover:not(:disabled) .title,
+.mc-button:focus-visible .title {
+  color: var(--button-text-hover);
+  text-shadow: 2px 2px var(--button-text-hover-shadow);
+  background-color: var(--button-background-hover);
+}
+
+.mc-button:active:not(:disabled) .title {
+  box-shadow: inset -2px -4px var(--button-active-inset-dark), inset 2px 2px var(--button-active-text-inset-light);
+}
+
+.mc-button:disabled {
+  cursor: default;
+}
+
+.mc-button:disabled .title {
+  color: #8a8a8a;
+}
+
+/* A visible ring on every focusable control: the browser default disappears
+   against the button texture. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* --- slot --- */
+.slot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--slot-size);
+  height: var(--slot-size);
+  padding: 0;
+  background-color: var(--slot-background);
+  border: 0;
+  /* Sunken, the inverse of the panel: dark along the top and left. The white
+     bottom-right edge is what draws the line between touching slots. */
+  box-shadow: inset 2px 2px 0 var(--slot-dark), inset -2px -2px 0 var(--slot-light);
+}
+
+/* The result slot is drawn larger than the inputs, as in the crafting window. */
+.slot--output {
+  --slot-size: 4.25rem;
+}
+
+button.slot {
+  /* without this a drag on a touchscreen scrolls the page instead */
+  touch-action: none;
+  cursor: pointer;
+}
+
+button.slot:hover:not(:disabled) {
+  background-color: var(--slot-background-hover);
+}
+
+.slot--correct { background-color: var(--hint-correct); }
+.slot--misplaced { background-color: var(--hint-misplaced); }
+.slot--absent { background-color: var(--hint-absent); }
+
+/* A shape doubling every colour: colour alone would leave a player with a
+   colour vision deficiency nothing to read (WCAG 1.4.1). */
+.slot--correct,
+.slot--misplaced {
+  position: relative;
+}
+
+.slot--correct::after,
+.slot--misplaced::after {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 9px;
+  height: 9px;
+  content: '';
+  background-color: rgba(0, 0, 0, 0.72);
+}
+
+.slot--correct::after {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.slot--misplaced::after {
+  background-color: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.72);
+  border-radius: 50%;
+}
+
+/* --- item sprite --- */
+.item-icon {
+  display: block;
+  flex: none;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+/* --- the item riding the cursor --- */
+.held-item {
+  position: fixed;
+  z-index: 100000;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+/* --- scrolling announcement --- */
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee > * {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee-scroll 12s linear infinite;
+}
+
+.marquee:hover > * {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+/* --- dialog --- */
+.mc-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.mc-dialog {
+  width: 100%;
+  max-width: 24rem;
+  /* dvh, so the dialog fits inside a mobile viewport whose toolbars come and go */
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  overflow-y: auto;
+  font-size: 0.8rem;
+}
+
+/* Paragraph spacing is off globally — the board wants none — so it is put back
+   only inside dialogs, which are the only place with running text. */
+.mc-dialog p,
+.mc-dialog ol,
+.mc-dialog dl {
+  margin: 0 0 0.75rem;
+}
+
+.mc-dialog h2 {
+  margin-bottom: 0.5rem;
+}
+
+.mc-dialog li + li {
+  margin-top: 0.4rem;
+}
+
+/* --- announced but not drawn --- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+}
+
+/* Motion here is decorative, so honour a system-wide request to drop it. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee > * {
+    padding-left: 0;
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,108 +1,91 @@
 <script setup lang="ts">
-import { Hint } from '@/utils/types.ts'
+import McButton from './McButton.vue'
+import McDialog from './McDialog.vue'
+import { useI18n } from 'vue-i18n'
 
 const model = defineModel<boolean>({ required: true })
+const { t } = useI18n()
 
 const legend = [
-  { hint: Hint.Correct, colour: 'bg-correct', mark: 'slot-mark-correct', key: 'correct', mark_key: 'markCorrect' },
-  { hint: Hint.Misplaced, colour: 'bg-misplaced', mark: 'slot-mark-misplaced', key: 'misplaced', mark_key: 'markMisplaced' },
-  { hint: Hint.Absent, colour: 'bg-absent', mark: null, key: 'absent', mark_key: null }
+  { css: 'slot--correct', key: 'correct', mark: 'markCorrect' },
+  { css: 'slot--misplaced', key: 'misplaced', mark: 'markMisplaced' },
+  { css: 'slot--absent', key: 'absent', mark: null }
 ] as const
 </script>
 
 <template>
-  <v-dialog
+  <McDialog
     v-model="model"
-    max-width="34rem"
-    scrollable
+    :title="t('howTo.title')"
   >
-    <v-card :title="$t('howTo.title')">
-      <v-card-text>
-        <p class="mb-4">
-          {{ $t('howTo.intro') }}
-        </p>
-        <ol class="mb-4 ps-4">
-          <li class="mb-1">
-            {{ $t('howTo.step1') }}
-          </li>
-          <li>{{ $t('howTo.step2') }}</li>
-        </ol>
+    <p>{{ $t('howTo.intro') }}</p>
+    <ol>
+      <li>{{ $t('howTo.step1') }}</li>
+      <li>{{ $t('howTo.step2') }}</li>
+      <li>{{ $t('howTo.step3') }}</li>
+    </ol>
 
-        <dl class="legend mb-4">
-          <template
-            v-for="entry in legend"
-            :key="entry.key"
-          >
-            <dt>
-              <v-sheet
-                :class="[entry.colour, entry.mark]"
-                width="24"
-                height="24"
-                rounded="sm"
-              />
-            </dt>
-            <dd>
-              {{ $t(`howTo.${entry.key}`) }}
-              <span
-                v-if="entry.mark_key"
-                class="text-medium-emphasis"
-              >({{ $t(`a11y.${entry.mark_key}`) }})</span>
-            </dd>
+    <dl class="legend">
+      <template
+        v-for="entry in legend"
+        :key="entry.key"
+      >
+        <dt>
+          <span
+            class="swatch"
+            :class="entry.css"
+          />
+        </dt>
+        <dd>
+          {{ $t(`howTo.${entry.key}`) }}
+          <template v-if="entry.mark">
+            <span class="muted">({{ $t(`a11y.${entry.mark}`) }})</span>
           </template>
-        </dl>
+        </dd>
+      </template>
+    </dl>
 
-        <p class="text-medium-emphasis mb-2">
-          {{ $t('howTo.shapeNote') }}
-        </p>
-        <p class="text-medium-emphasis">
-          {{ $t('howTo.keyboard') }}
-        </p>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn @click="model = false">
-          {{ $t('result.close') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    <p>{{ $t('howTo.shapeNote') }}</p>
+    <p>{{ $t('howTo.keyboard') }}</p>
+
+    <div class="actions">
+      <McButton @click="model = false">
+        {{ $t('result.close') }}
+      </McButton>
+    </div>
+  </McDialog>
 </template>
 
 <style scoped>
+ol {
+  padding-left: 1.25rem;
+  margin: 0 0 0.75rem;
+}
+
 .legend {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.5rem 0.75rem;
+  gap: 0.4rem 0.6rem;
   align-items: center;
+  margin: 0 0 0.75rem;
 }
 
 .legend dd {
   margin: 0;
 }
 
-.slot-mark-correct,
-.slot-mark-misplaced {
-  position: relative;
+.swatch {
+  display: block;
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
-.slot-mark-correct::after,
-.slot-mark-misplaced::after {
-  content: '';
-  position: absolute;
-  right: 2px;
-  bottom: 2px;
-  width: 7px;
-  height: 7px;
-  background-color: rgba(0, 0, 0, 0.72);
+.muted {
+  opacity: 0.7;
 }
 
-.slot-mark-correct::after {
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-}
-
-.slot-mark-misplaced::after {
-  border-radius: 50%;
-  background-color: transparent;
-  border: 2px solid rgba(0, 0, 0, 0.72);
+.actions {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

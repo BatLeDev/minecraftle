@@ -1,6 +1,6 @@
 import { computed, ref, watch } from 'vue'
-import { MAX_GUESSES, applyGuess, craftIndex, createGame } from '@/utils/game.ts'
-import { EMPTY_GRID, GRID_CELLS, isEmpty, setCell } from '@/utils/grid.ts'
+import { MAX_GUESSES, applyGuess, craft, craftIndex, createGame } from '@/utils/game.ts'
+import { EMPTY_GRID, GRID_CELLS, setCell } from '@/utils/grid.ts'
 import { dayNumber, puzzleForDay } from '@/utils/puzzle.ts'
 import { seededRandom } from '@/utils/random.ts'
 import { readJson, writeJson } from '@/utils/storage.ts'
@@ -103,10 +103,33 @@ restore()
 
 // --- actions -------------------------------------------------------------
 
+/**
+ * The item each played guess crafted, as an item id.
+ *
+ * The engine records the recipe *key* — that is what the win check compares —
+ * but an icon needs the item id, and the two are not the same string.
+ */
+const craftedOutputs = computed(() =>
+  game.value.crafted.map(key => (key ? recipes[key].output : null)))
+
+/**
+ * What the grid being built would craft, live.
+ *
+ * Shown in the result slot as the player fills the grid, and it is also the
+ * gate on submitting: a guess has to be a real recipe, which is what makes each
+ * attempt worth something instead of an arbitrary arrangement.
+ */
+const draftOutput = computed(() => {
+  const key = craft(index, draft.value)
+  return key ? recipes[key].output : null
+})
+
 export function useGame () {
   const status = computed(() => game.value.status)
-  const canSubmit = computed(() => status.value === 'playing' && !isEmpty(draft.value))
+  const canSubmit = computed(() => status.value === 'playing' && draftOutput.value !== null)
   const guessesLeft = computed(() => MAX_GUESSES - game.value.guesses.length)
+  /** Which attempt is being played, 1-based, as the counter shows it. */
+  const attempt = computed(() => Math.min(game.value.guesses.length + 1, MAX_GUESSES))
 
   /** Picks an ingredient up, or puts it down if it was already held. */
   function select (item: ItemId | null) {
@@ -183,6 +206,9 @@ export function useGame () {
     status,
     canSubmit,
     guessesLeft,
+    attempt,
+    draftOutput,
+    craftedOutputs,
     ingredientHints,
     select,
     placeAt,

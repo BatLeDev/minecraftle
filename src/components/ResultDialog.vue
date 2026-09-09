@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { mdiCheck, mdiContentCopy } from '@mdi/js'
+import { useI18n } from 'vue-i18n'
 import CraftGrid from './CraftGrid.vue'
+import McButton from './McButton.vue'
+import McDialog from './McDialog.vue'
 import { useGame, recipes } from '@/composables/useGame.ts'
 import { useOptions } from '@/composables/useOptions.ts'
 import { itemName } from '@/utils/items.ts'
@@ -10,6 +12,7 @@ import { shareText } from '@/utils/share.ts'
 
 const model = defineModel<boolean>({ required: true })
 
+const { t } = useI18n()
 const { game, solution, day, mode, status, playRandom } = useGame()
 const { options } = useOptions()
 
@@ -17,6 +20,10 @@ const copied = ref(false)
 
 const solutionGrid = computed(() => placements(recipes[solution.value].input)[0])
 const solutionName = computed(() => itemName(recipes[solution.value].output, options.value.locale))
+
+const heading = computed(() => status.value === 'won'
+  ? t('result.won', { count: game.value.guesses.length }, game.value.guesses.length)
+  : t('result.lost'))
 
 const summary = computed(() => shareText({
   day: day.value,
@@ -38,63 +45,69 @@ async function copy () {
 </script>
 
 <template>
-  <v-dialog
+  <McDialog
     v-model="model"
-    max-width="30rem"
-    scrollable
+    :title="heading"
   >
-    <v-card>
-      <v-card-item>
-        <v-card-title>
-          {{ status === 'won'
-            ? $t('result.won', { count: game.guesses.length }, game.guesses.length)
-            : $t('result.lost') }}
-        </v-card-title>
-        <v-card-subtitle>{{ $t('result.solution', { name: solutionName }) }}</v-card-subtitle>
-      </v-card-item>
+    <p>{{ $t('result.solution', { name: solutionName }) }}</p>
 
-      <v-card-text>
-        <div class="d-flex justify-center mb-4">
-          <CraftGrid
-            :grid="solutionGrid"
-            :output="recipes[solution].output"
-            test-id="solution-grid"
-          />
-        </div>
+    <div class="solution">
+      <CraftGrid
+        :grid="solutionGrid"
+        :output="recipes[solution].output"
+        test-id="solution-grid"
+      />
+    </div>
 
-        <pre
-          v-if="mode === 'daily'"
-          class="summary"
-        >{{ summary }}</pre>
-      </v-card-text>
+    <pre
+      v-if="mode === 'daily'"
+      class="summary"
+    >{{ summary }}</pre>
 
-      <v-card-actions>
-        <v-btn
-          v-if="mode === 'daily'"
-          :prepend-icon="copied ? mdiCheck : mdiContentCopy"
-          @click="copy"
-        >
-          {{ copied ? $t('result.copied') : $t('result.share') }}
-        </v-btn>
-        <v-spacer />
-        <v-btn @click="playRandom(); model = false">
-          {{ $t('result.playRandom') }}
-        </v-btn>
-        <v-btn @click="model = false">
-          {{ $t('result.close') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    <div class="actions">
+      <McButton
+        v-if="mode === 'daily'"
+        small
+        @click="copy"
+      >
+        {{ copied ? $t('result.copied') : $t('result.share') }}
+      </McButton>
+      <McButton
+        small
+        @click="playRandom(); model = false"
+      >
+        {{ $t('result.playRandom') }}
+      </McButton>
+      <McButton
+        small
+        @click="model = false"
+      >
+        {{ $t('result.close') }}
+      </McButton>
+    </div>
+  </McDialog>
 </template>
 
 <style scoped>
+.solution {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
 .summary {
+  max-height: 14rem;
+  margin: 0 0 0.75rem;
+  overflow-y: auto;
   font-family: inherit;
   line-height: 1.15;
   text-align: center;
-  max-height: 16rem;
-  overflow-y: auto;
-  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
 }
 </style>

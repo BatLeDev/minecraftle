@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import CraftArrow from './CraftArrow.vue'
 import CraftSlot from './CraftSlot.vue'
 import ItemIcon from './ItemIcon.vue'
+import { useOptions } from '@/composables/useOptions.ts'
+import { itemName } from '@/utils/items.ts'
 import { GRID_CELLS } from '@/utils/grid.ts'
 import type { Grid, Hints } from '@/utils/types.ts'
 
@@ -13,26 +16,44 @@ const props = defineProps<{
   /** 1-based, for the accessible name; omitted on the grid being built. */
   guessNumber?: number
   output?: string | null
-  /** Overrides the generated test id, for grids that are neither a guess nor the draft. */
+  /** Overrides the generated test id, for a grid that is neither a guess nor the draft. */
   testId?: string
+  /** Drops the panel background, for the grid shown inside a dialog. */
+  bare?: boolean
 }>()
 
-const emit = defineEmits<{ place: [index: number]; clear: [index: number] }>()
+const emit = defineEmits<{
+  place: [index: number]
+  clear: [index: number]
+  press: [index: number]
+  enter: [index: number]
+  release: [index: number]
+  submit: []
+}>()
 
 const { t } = useI18n()
-
+const { options } = useOptions()
 const slots = ref<HTMLElement[]>([])
 
 const label = computed(() => props.guessNumber
   ? t('a11y.guessNumber', { n: props.guessNumber })
   : t('a11y.currentGuess'))
 
+const testId = computed(() =>
+  props.testId ?? (props.guessNumber ? `guess-${props.guessNumber}` : 'draft-grid'))
+
+const outputLabel = computed(() => {
+  if (!props.output) return t('board.outputEmpty')
+  const name = itemName(props.output, options.value.locale)
+  return props.interactive ? t('board.craftItem', { name }) : t('board.outputIs', { name })
+})
+
 /**
  * Arrow keys walk the grid.
  *
  * Without this the grid is only reachable by tabbing through nine buttons in a
  * row, which tells a keyboard user nothing about the two-dimensional shape they
- * are building — the shape being the whole puzzle.
+ * are building — and the shape is the whole puzzle.
  */
 function onKeydown (event: KeyboardEvent, i: number) {
   const moves: Record<string, number> = {
@@ -44,19 +65,23 @@ function onKeydown (event: KeyboardEvent, i: number) {
   const delta = moves[event.key]
   if (delta === undefined) return
   event.preventDefault()
-  const target = slots.value[i + delta]
-  // v-btn renders the button itself, so the ref may be the component root
-  ;(target as unknown as { $el?: HTMLElement })?.$el?.focus?.() ?? target?.focus?.()
+  const target = slots.value[i + delta] as unknown as { $el?: HTMLElement }
+  ;(target?.$el ?? target as unknown as HTMLElement)?.focus?.()
 }
 </script>
 
 <template>
-  <div class="d-flex align-center ga-3">
+  <!-- Each attempt is its own inventory window, stacked down the page, as
+       upstream draws them. -->
+  <div
+    class="crafting-table box"
+    :class="{ 'inv-background': !bare }"
+  >
     <div
-      class="craft-grid"
+      class="grid"
       role="group"
       :aria-label="label"
-      :data-testid="testId ?? (guessNumber ? `guess-${guessNumber}` : 'draft-grid')"
+      :data-testid="testId"
     >
       <CraftSlot
         v-for="i in GRID_CELLS"
@@ -68,47 +93,67 @@ function onKeydown (event: KeyboardEvent, i: number) {
         :interactive="interactive"
         @place="emit('place', i - 1)"
         @clear="emit('clear', i - 1)"
+        @press="emit('press', i - 1)"
+        @enter="emit('enter', i - 1)"
+        @release="emit('release', i - 1)"
         @keydown="onKeydown($event, i - 1)"
       />
     </div>
 
-    <!-- The crafting result, which is feedback in its own right: a guess that
-         crafts the wrong thing still tells the player their shape is valid. -->
-    <v-sheet
-      class="craft-output d-flex align-center justify-center"
-      :class="{ 'craft-output--empty': !output }"
-      width="52"
-      height="52"
-      rounded="sm"
-      role="img"
-      :aria-label="output ? $t('board.output') : ''"
-      :data-testid="testId ? `${testId}-output` : (guessNumber ? `output-${guessNumber}` : 'output-draft')"
+    <CraftArrow />
+
+    <!-- The result slot is also how a guess is submitted, as in the game: it
+         only accepts a click once the grid actually crafts something, so every
+         attempt is a real recipe rather than an arbitrary arrangement. -->
+    <button
+      v-if="interactive"
+      type="button"
+      class="slot slot--output"
+      :disabled="!output"
+      :aria-label="outputLabel"
+      :data-testid="`${testId}-output`"
+      @click="emit('submit')"
     >
       <ItemIcon
         v-if="output"
         :item="output"
-        :size="40"
+        :size="56"
       />
-    </v-sheet>
+    </button>
+    <div
+      v-else
+      class="slot slot--output"
+      role="img"
+      :aria-label="outputLabel"
+      :data-testid="`${testId}-output`"
+    >
+      <ItemIcon
+        v-if="output"
+        :item="output"
+        :size="56"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped>
-.craft-grid {
+.crafting-table {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 22rem;
+  max-width: 100%;
+  /* Tighter than the generic panel padding: the crafting window in the game
+     leaves only a small margin around the grid. */
+  padding: 0.9rem;
+}
+
+/* Three columns of 3rem slots, touching, as in the crafting window. */
+.grid {
   display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 4px;
-  padding: 6px;
-  border-radius: 6px;
-  background-color: rgb(var(--v-theme-surface-bright));
+  grid-template-columns: repeat(3, 3rem);
+  width: 9rem;
 }
 
-.craft-output {
-  background-color: rgb(var(--v-theme-slot));
-  border: 1px solid rgb(var(--v-theme-on-surface), 0.16);
-}
-
-.craft-output--empty {
-  opacity: 0.45;
-}
 </style>

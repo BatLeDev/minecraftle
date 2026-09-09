@@ -21,13 +21,16 @@ export function solutionName (locale: 'en' | 'fr') {
   return itemName(solutionOutput, locale)
 }
 
-/** A grid that is certainly not the answer, for filling failed attempts. */
+/**
+ * A real recipe that is not the answer, for filling failed attempts.
+ *
+ * It has to craft something: a guess is only submittable once the grid produces
+ * an item, which is what makes every attempt a genuine recipe.
+ */
+export const wrongKey = Object.keys(all).find(key => key !== solutionKey)!
+
 export function wrongGrid (): Grid {
-  const cells: (string | null)[] = Array(9).fill(null)
-  // Two ingredients that no recipe pairs this way, so it never crafts by luck.
-  cells[0] = 'minecraft:diamond'
-  cells[8] = 'minecraft:leather'
-  return cells
+  return placements(all[wrongKey].input)[0]
 }
 
 export async function openGame (page: Page) {
@@ -37,26 +40,28 @@ export async function openGame (page: Page) {
 }
 
 /**
- * Fills the current grid.
+ * Fills the current grid, one slot at a time.
  *
- * The held ingredient is tracked because clicking the ingredient already held
- * puts it back down — so a recipe using the same item twice must not click it
- * again between placements.
+ * The ingredient is taken again before every placement because a slot click
+ * swaps: what is held goes in and whatever was there comes out, which for an
+ * empty slot means the hand ends up empty. Filling several slots in one gesture
+ * is what dragging is for, and that is covered in its own suite.
  */
 export async function fillGrid (page: Page, grid: Grid) {
-  let held: string | null = null
   for (let i = 0; i < 9; i++) {
     const item = grid[i]
     if (item === null) continue
-    if (held !== item) {
-      await page.getByTestId(`ingredient-${item}`).click()
-      held = item
-    }
+    await page.getByTestId(`ingredient-${item}`).click()
     await page.getByTestId('draft-grid').getByTestId(`slot-${i}`).click()
   }
 }
 
+/** The result slot is how a guess is played, exactly as in the game. */
+export function craftButton (page: Page) {
+  return page.getByTestId('draft-grid-output')
+}
+
 export async function craft (page: Page, grid: Grid) {
   await fillGrid(page, grid)
-  await page.getByRole('button', { name: 'Craft' }).click()
+  await craftButton(page).click()
 }

@@ -9,8 +9,7 @@ const meta = computed(() => items[props.item])
 
 /**
  * One sprite out of the atlas, addressed by cell rather than loaded as its own
- * image: 144 icons in a single 53 kB request instead of 144 requests, and no
- * base64 data URI to blow the JSON up.
+ * image: 144 icons in a single 53 kB request instead of 144 requests.
  */
 const style = computed(() => {
   if (!meta.value) return { display: 'none' }
@@ -33,13 +32,3 @@ const style = computed(() => {
     aria-hidden="true"
   />
 </template>
-
-<style scoped>
-.item-icon {
-  display: block;
-  /* the icons are pixel art: never let the browser smooth them */
-  image-rendering: pixelated;
-  background-repeat: no-repeat;
-  flex: none;
-}
-</style>

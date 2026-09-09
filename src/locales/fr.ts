@@ -14,9 +14,14 @@ export default {
     guessesLeft: 'aucun essai restant | 1 essai restant | {count} essais restants',
     craft: 'Fabriquer',
     clear: 'Vider la grille',
-    ingredients: 'Ingrédients',
-    randomGame: 'Partie aléatoire — elle ne compte pas dans vos statistiques',
-    output: 'Résultat'
+    ingredients: 'Ingrédients de fabrication',
+    guessCounter: 'Essai {n}/{total}',
+    banner: 'Recettes de Minecraft 26.2',
+    randomGame: 'Partie aléatoire - elle ne compte pas dans vos statistiques',
+    output: 'Résultat',
+    outputEmpty: "Résultat : rien pour l'instant - la grille ne fabrique rien",
+    outputIs: 'Résultat : {name}',
+    craftItem: 'Fabriquer {name} et valider cet essai'
   },
   result: {
     won: 'Fabriqué en {count} essai | Fabriqué en {count} essais',
@@ -31,13 +36,14 @@ export default {
   howTo: {
     title: 'Comment jouer',
     intro: 'Une recette de fabrication Minecraft se cache dans la grille 3×3. Vous avez dix essais pour la reproduire.',
-    step1: 'Choisissez un ingrédient, puis cliquez une case pour le poser. Cliquez une case remplie pour la vider.',
-    step2: 'Appuyez sur Fabriquer pour valider votre grille. Chaque case prend alors une couleur.',
+    step1: 'Prenez un ingrédient en cliquant dessus - il suit alors votre curseur. Cliquez une case, ou glissez directement dessus, pour le poser.',
+    step2: "Cliquez à nouveau l'ingrédient pour le reposer. Main vide, cliquez une case remplie pour en reprendre l'item.",
+    step3: "La case de droite montre ce que votre grille fabriquerait. Cliquez-la pour jouer l'essai - chaque essai est donc une vraie recette.",
     correct: 'Cet ingrédient est à la bonne place.',
     misplaced: 'Cet ingrédient fait partie de la recette, mais ailleurs.',
     absent: 'Cet ingrédient n\'est pas dans la recette, ou tous ses exemplaires sont déjà placés.',
     shapeNote: 'Une recette peut se placer n\'importe où dans la grille, et en miroir. Une case ne passe au vert que lorsque c\'est certain.',
-    keyboard: 'Clavier : les flèches déplacent la sélection, Entrée pose l\'ingrédient choisi, Retour arrière vide une case.'
+    keyboard: 'Clavier : Tab atteint les ingrédients et la grille, Entrée prend un ingrédient puis le pose, les flèches déplacent la sélection, Retour arrière vide une case.'
   },
   stats: {
     title: 'Statistiques',

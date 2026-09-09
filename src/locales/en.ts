@@ -14,9 +14,14 @@ export default {
     guessesLeft: 'no tries left | 1 try left | {count} tries left',
     craft: 'Craft',
     clear: 'Clear grid',
-    ingredients: 'Ingredients',
-    randomGame: 'Random game — this one does not count towards your statistics',
-    output: 'Result'
+    ingredients: 'Crafting Ingredients',
+    guessCounter: 'Guess {n}/{total}',
+    banner: 'Recipes from Minecraft 26.2',
+    randomGame: 'Random game - this one does not count towards your statistics',
+    output: 'Result',
+    outputEmpty: 'Result: nothing yet - the grid does not craft anything',
+    outputIs: 'Result: {name}',
+    craftItem: 'Craft {name} and submit this attempt'
   },
   result: {
     won: 'Crafted in {count} try | Crafted in {count} tries',
@@ -31,13 +36,14 @@ export default {
   howTo: {
     title: 'How to play',
     intro: 'A Minecraft crafting recipe is hidden in the 3×3 grid. You have ten tries to reproduce it.',
-    step1: 'Pick an ingredient, then click a slot to place it. Click a filled slot again to empty it.',
-    step2: 'Press Craft to submit your grid. Every slot is then coloured.',
+    step1: 'Take an ingredient by clicking it - it then follows your cursor. Click a slot, or drag straight onto one, to place it.',
+    step2: 'Click the ingredient again to put it down. With an empty hand, click a filled slot to take that item back.',
+    step3: 'The slot on the right shows what your grid would craft. Click it to play the attempt - so every attempt is a real recipe.',
     correct: 'That item belongs in that exact slot.',
     misplaced: 'That item is in the recipe, but somewhere else.',
     absent: 'That item is not in the recipe, or every copy of it is already placed.',
     shapeNote: 'A recipe can sit anywhere in the grid, and mirrored. A slot only turns green once it is certain.',
-    keyboard: 'Keyboard: arrow keys move between slots, Enter places the selected ingredient, Backspace empties a slot.'
+    keyboard: 'Keyboard: Tab reaches the ingredients and the grid, Enter takes an ingredient and places it, arrow keys move between slots, Backspace empties one.'
   },
   stats: {
     title: 'Statistics',

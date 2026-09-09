@@ -38,7 +38,7 @@ test('hints carry a shape, not only a colour', async ({ page }) => {
   await openGame(page)
   await craft(page, solutionGrid)
 
-  const marked = page.getByTestId('guess-1').locator('.slot-mark-correct')
+  const marked = page.getByTestId('guess-1').locator('.slot--correct')
   expect(await marked.count()).toBeGreaterThan(0)
   // The shape is drawn, not just declared.
   const size = await marked.first().evaluate(el =>
@@ -71,7 +71,7 @@ test('a dialog takes focus and gives it back on close', async ({ page }) => {
   // Focus must come back to the control that opened the dialog, or a keyboard
   // user is dropped at the top of the document.
   await expect.poll(() => page.evaluate(() =>
-    document.activeElement?.getAttribute('aria-label')
+    document.activeElement?.textContent?.trim()
   )).toBe('How to play')
 })
 

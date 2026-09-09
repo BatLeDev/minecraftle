@@ -1,29 +1,31 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import ItemIcon from './ItemIcon.vue'
+import McButton from './McButton.vue'
+import { useDragAndDrop } from '@/composables/useDragAndDrop.ts'
 import { useGame } from '@/composables/useGame.ts'
 import { useOptions } from '@/composables/useOptions.ts'
+import { MAX_GUESSES } from '@/utils/game.ts'
 import { ingredients, itemName } from '@/utils/items.ts'
 import { Hint } from '@/utils/types.ts'
 import type { ItemId } from '@/utils/types.ts'
 
 const { t } = useI18n()
 const { options } = useOptions()
-const { selected, select, ingredientHints } = useGame()
+const { selected, ingredientHints, attempt, status, clearDraft } = useGame()
+const { pressIngredient, toggleIngredient } = useDragAndDrop()
 
 /**
  * Tints an ingredient with the best hint it has ever earned, so a player can see
  * at a glance what they have already ruled out instead of scrolling back through
- * their guesses — upstream issue #42.
+ * their guesses — upstream issue #42. The corner shape doubles the colour.
  */
-function tint (item: ItemId) {
+function hintClass (item: ItemId) {
   const hint = ingredientHints.value.get(item)
-  // The corner shape doubles the colour, as on the board: colour alone would
-  // leave a player with a colour vision deficiency nothing to read.
-  if (hint === Hint.Correct) return ['bg-correct', 'slot-mark-correct']
-  if (hint === Hint.Misplaced) return ['bg-misplaced', 'slot-mark-misplaced']
-  if (hint === Hint.Absent) return 'bg-absent'
-  return 'inventory-slot--untried'
+  if (hint === Hint.Correct) return 'slot--correct'
+  if (hint === Hint.Misplaced) return 'slot--misplaced'
+  if (hint === Hint.Absent) return 'slot--absent'
+  return null
 }
 
 function label (item: ItemId) {
@@ -35,84 +37,75 @@ function label (item: ItemId) {
 </script>
 
 <template>
-  <section>
-    <h2 class="text-subtitle-2 text-medium-emphasis mb-2">
-      {{ $t('board.ingredients') }}
-    </h2>
-    <div class="inventory">
-      <v-btn
+  <section class="inventory box inv-background">
+    <h2>{{ $t('board.ingredients') }}</h2>
+
+    <div class="slots">
+      <button
         v-for="item in ingredients"
         :key="item"
-        class="inventory-slot"
-        :class="[tint(item), { 'inventory-slot--selected': selected === item }]"
+        type="button"
+        class="slot"
+        :class="[hintClass(item), { 'slot--held': selected === item }]"
         :aria-pressed="selected === item"
         :aria-label="label(item)"
+        :title="itemName(item, options.locale)"
         :data-testid="`ingredient-${item}`"
-        width="48"
-        height="48"
-        variant="flat"
-        rounded="sm"
-        @click="select(item)"
+        @keydown.enter.prevent="toggleIngredient(item)"
+        @keydown.space.prevent="toggleIngredient(item)"
+        @pointerdown="pressIngredient(item)"
       >
         <ItemIcon
           :item="item"
-          :size="34"
+          :size="40"
         />
-        <v-tooltip
-          activator="parent"
-          location="top"
-        >
-          {{ itemName(item, options.locale) }}
-        </v-tooltip>
-      </v-btn>
+      </button>
+    </div>
+
+    <div class="footer">
+      <McButton
+        :disabled="status !== 'playing'"
+        @click="clearDraft"
+      >
+        {{ $t('board.clear') }}
+      </McButton>
+      <p>{{ $t('board.guessCounter', { n: attempt, total: MAX_GUESSES }) }}</p>
     </div>
   </section>
 </template>
 
 <style scoped>
 .inventory {
+  padding: 0.9rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  width: 22rem;
 }
 
-.inventory-slot {
-  min-width: 0;
-  border: 1px solid rgb(var(--v-theme-on-surface), 0.16);
+.inventory h2 {
+  align-self: flex-start;
+  font-size: 1.1rem;
+  white-space: nowrap;
 }
 
-.inventory-slot--untried {
-  background-color: rgb(var(--v-theme-slot));
+/* Six to a row, as the box width allows, and touching like the real inventory. */
+.slots {
+  display: grid;
+  grid-template-columns: repeat(6, 3rem);
 }
 
-.inventory-slot--selected {
-  outline: 2px solid rgb(var(--v-theme-primary));
-  outline-offset: 2px;
+.footer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.slot-mark-correct,
-.slot-mark-misplaced {
-  position: relative;
-}
-
-.slot-mark-correct::after,
-.slot-mark-misplaced::after {
-  content: '';
-  position: absolute;
-  right: 3px;
-  bottom: 3px;
-  width: 9px;
-  height: 9px;
-  background-color: rgba(0, 0, 0, 0.72);
-}
-
-.slot-mark-correct::after {
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-}
-
-.slot-mark-misplaced::after {
-  border-radius: 50%;
-  background-color: transparent;
-  border: 2px solid rgba(0, 0, 0, 0.72);
+.slot--held {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
 }
 </style>

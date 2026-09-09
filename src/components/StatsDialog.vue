@@ -1,100 +1,69 @@
 <script setup lang="ts">
+import McButton from './McButton.vue'
+import McDialog from './McDialog.vue'
+import { useI18n } from 'vue-i18n'
 import { useStats } from '@/composables/useStats.ts'
 
 const model = defineModel<boolean>({ required: true })
-
+const { t } = useI18n()
 const { stats, winRate, bestCount } = useStats()
 </script>
 
 <template>
-  <v-dialog
+  <McDialog
     v-model="model"
-    max-width="30rem"
-    scrollable
+    :title="t('stats.title')"
   >
-    <v-card :title="$t('stats.title')">
-      <v-card-text>
-        <div
-          v-if="stats.played === 0"
-          class="text-medium-emphasis"
-        >
-          {{ $t('stats.empty') }}
+    <p v-if="stats.played === 0">
+      {{ $t('stats.empty') }}
+    </p>
+
+    <template v-else>
+      <dl class="figures">
+        <div>
+          <dd>{{ stats.played }}</dd>
+          <dt>{{ $t('stats.played') }}</dt>
         </div>
+        <div>
+          <dd>{{ winRate }}%</dd>
+          <dt>{{ $t('stats.winRate') }}</dt>
+        </div>
+        <div>
+          <dd>{{ stats.currentStreak }}</dd>
+          <dt>{{ $t('stats.currentStreak') }}</dt>
+        </div>
+        <div>
+          <dd>{{ stats.maxStreak }}</dd>
+          <dt>{{ $t('stats.maxStreak') }}</dt>
+        </div>
+      </dl>
 
-        <template v-else>
-          <div class="figures mb-6">
-            <div>
-              <div class="text-h5">
-                {{ stats.played }}
-              </div>
-              <div class="text-caption text-medium-emphasis">
-                {{ $t('stats.played') }}
-              </div>
-            </div>
-            <div>
-              <div class="text-h5">
-                {{ winRate }}%
-              </div>
-              <div class="text-caption text-medium-emphasis">
-                {{ $t('stats.winRate') }}
-              </div>
-            </div>
-            <div>
-              <div class="text-h5">
-                {{ stats.currentStreak }}
-              </div>
-              <div class="text-caption text-medium-emphasis">
-                {{ $t('stats.currentStreak') }}
-              </div>
-            </div>
-            <div>
-              <div class="text-h5">
-                {{ stats.maxStreak }}
-              </div>
-              <div class="text-caption text-medium-emphasis">
-                {{ $t('stats.maxStreak') }}
-              </div>
-            </div>
-          </div>
-
-          <h3 class="text-subtitle-2 mb-2">
-            {{ $t('stats.distribution') }}
-          </h3>
-          <!-- A plain bar per row: the value is written on the bar, so the shape
-               is a convenience and never the only way to read the number. -->
-          <div class="distribution">
-            <template
-              v-for="(count, i) in stats.distribution"
-              :key="i"
-            >
-              <span class="text-caption">{{ i + 1 }}</span>
-              <div class="distribution-track">
-                <div
-                  class="distribution-bar bg-primary"
-                  :style="{ width: `${Math.max(count / bestCount * 100, count ? 8 : 0)}%` }"
-                >
-                  <span
-                    v-if="count"
-                    class="text-caption px-2"
-                  >{{ count }}</span>
-                </div>
-                <span
-                  v-if="!count"
-                  class="text-caption text-medium-emphasis px-1"
-                >0</span>
-              </div>
-            </template>
+      <h3>{{ $t('stats.distribution') }}</h3>
+      <!-- The count is written on every row, so the bar is a convenience and
+           never the only way to read the number. -->
+      <div class="distribution">
+        <template
+          v-for="(count, i) in stats.distribution"
+          :key="i"
+        >
+          <span>{{ i + 1 }}</span>
+          <div class="track">
+            <div
+              class="bar"
+              :style="{ width: `${(count / bestCount) * 100}%` }"
+            />
+            <span class="count">{{ count }}</span>
           </div>
         </template>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn @click="model = false">
-          {{ $t('result.close') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      </div>
+    </template>
+
+    <div class="actions">
+      <McButton @click="model = false">
+        {{ $t('result.close') }}
+      </McButton>
+    </div>
+  </McDialog>
 </template>
 
 <style scoped>
@@ -102,26 +71,52 @@ const { stats, winRate, bestCount } = useStats()
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
+  margin: 0 0 1rem;
   text-align: center;
+}
+
+.figures dd {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.figures dt {
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+
+h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: normal;
 }
 
 .distribution {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 4px 8px;
+  gap: 3px 0.5rem;
   align-items: center;
 }
 
-.distribution-track {
+.track {
   display: flex;
+  gap: 0.35rem;
   align-items: center;
 }
 
-.distribution-bar {
-  border-radius: 3px;
-  min-height: 1.25rem;
+.bar {
+  min-width: 2px;
+  height: 1.1rem;
+  background: var(--hint-correct);
+}
+
+.count {
+  font-size: 0.8rem;
+}
+
+.actions {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  margin-top: 1rem;
 }
 </style>

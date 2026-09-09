@@ -1,6 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import vueI18n from '@intlify/unplugin-vue-i18n/vite'
 import { fileURLToPath, URL } from 'node:url'
 
@@ -17,8 +16,7 @@ export default defineConfig(({ mode }) => {
     base: env.PUBLIC_URL ?? '/',
     plugins: [
       vueI18n({}),
-      vue({ template: { transformAssetUrls } }),
-      vuetify({ autoImport: true })
+      vue()
     ],
     resolve: {
       alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) }

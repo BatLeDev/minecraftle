@@ -1,15 +1,11 @@
 import neostandard from 'neostandard'
 import pluginVue from 'eslint-plugin-vue'
-import pluginVuetify from 'eslint-plugin-vuetify'
 
-// eslint-plugin-vuetify's flat/base already registers the `vue` plugin, and ESLint
-// 9.39+ rejects redefining a plugin — strip `plugins` from vue's flat config.
-const vueFlatRecommended = pluginVue.configs['flat/recommended'].map(({ plugins, ...rest }) => rest)
+const vueFlatRecommended = pluginVue.configs['flat/recommended']
 
 export default [
   { ignores: ['dist/', 'node_modules/', 'tests/output/', 'src/data/'] },
   ...vueFlatRecommended,
-  ...pluginVuetify.configs['flat/recommended'],
   ...neostandard({ ts: true, env: ['browser'] }),
   {
     files: ['**/*.vue'],
